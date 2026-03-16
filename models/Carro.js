@@ -155,8 +155,8 @@ class Carro extends Obj{
         this.y += this.dirY
         if(this.y < 15){
             this.y = 15
-        }else if(this.y > 585){
-            this.y = 585
+        }else if(this.y > 950){
+            this.y = 950
         }
 
         // ----- MOVIMENTAÇÃO DO EIXO X
@@ -171,8 +171,14 @@ class Carro extends Obj{
         this.x += this.dirX
         if(this.x < 20){
             this.x = 20
-        }else if(this.x > 1070){
-            this.x = 1070
+        }else if(this.x > 1790){
+            this.x = 1790
+        }
+    }
+
+    atirar(keysAtivas){
+        if(keysAtivas.J == true){
+
         }
     }
 
@@ -188,6 +194,15 @@ class Carro extends Obj{
     }
 }
 
+class Bala extends Obj{
+    mov_bala(){
+        this.x += 16
+        if(this.x > 1970){
+            
+        }
+    }
+}
+
 class CarroInimigo extends Obj{
     
     
@@ -195,8 +210,8 @@ class CarroInimigo extends Obj{
     mov_car(){
         this.x -= 8
         if(this.x < -110){
-            this.x = 1300
-            this.y = numAleatorio(15, 585)
+            this.x = 2020
+            this.y = numAleatorio(15, 965)
         }
     }
 }
@@ -205,7 +220,7 @@ class Estrela extends Obj{
     mov_est(){
         this.x -= 1
         if(this.x < -50){
-            this.x = 1250
+            this.x = 1970
         }
     }
 }
