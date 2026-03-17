@@ -2,7 +2,8 @@ let des = document.getElementById('desenho').getContext('2d')
 
 
 // ---------- Constantes ----------
-const armaCooldown = 6
+const ARMA_COOLDOWN = 5
+const FREQUENCIA_INIMIGO = 12
 
 
 
@@ -23,10 +24,6 @@ let estrelas = [
 let player = new Carro(20, 625, 115, 115, 'red')
 
 let inimigos = [
-    new CarroInimigo(1808, 325, 75, 75, 'green'),
-    new CarroInimigo(1488, 325, 75, 75, 'orange'),
-    new CarroInimigo(848, 325, 75, 75, 'blue'),
-    new CarroInimigo(528, 325, 75, 75, 'purple')
 ]
 
 let balas = [
@@ -35,7 +32,7 @@ let balas = [
 
 
 
-// ---------- Teclas ----------
+// --------------- Teclas ---------------
 let keysAtivas = {
     // Movimentação
     W : false,
@@ -85,7 +82,16 @@ document.addEventListener('keyup', (e)=>{
 
 
 
-// ---------- Funções principais ----------
+// -------------------- Funções principais --------------------
+
+// ---------- Utilidades ----------
+function numAleatorio(min, max){
+    return Math.random() * (max - min) + min
+}
+
+
+
+// ----- Detectar colisões na tela -----
 function colisao(){
     for(i=0;i<inimigos.length;i++){
         if(player.colid(inimigos[i])){
@@ -93,26 +99,54 @@ function colisao(){
             console.log(`VIDA: ${player.vida}`)
             inimigos[i].y = 1270
         }
+        for(j=0;j<balas.length;j++){
+            if(balas[j].colid(inimigos[i]) && player.vida > 0){
+                player.pontos += 5
+                console.log(`PONTOS: ${player.pontos}`)
+                inimigos.splice(i, 1)
+                balas.splice(j, 1)
+            }
+        }
     }
     
 }
 
+
+// ----- Desenhar objetos na tela -----
 function desenha(){
+
+    // Estrelas
     for(i=0;i<estrelas.length;i++){
         estrelas[i].des_quad()
     }
 
+    // Inimigos
     for(i=0;i<inimigos.length;i++){
         inimigos[i].des_quad()
+    }
+
+    // Balas
+    for(i=0;i<balas.length;i++){
+        balas[i].des_quad()
     }
 
     player.des_quad()
    
 }
 
+
+
+// ----- Mover objetos na tela -----
 function atualiza(){
+    // Player
     player.mov_car(keysAtivas)
 
+    // Balas
+    for(i=0; i < balas.length; i++){
+        balas[i].mov_bala()
+    }
+
+    // Inimigos
     for(i=0;i<inimigos.length;i++){
         inimigos[i].mov_car()
         if(inimigos[i].x == 1970 && player.vida > 0){
@@ -121,6 +155,7 @@ function atualiza(){
         }
     }
 
+    // Estrelas
     for(i=0;i<estrelas.length;i++){
         estrelas[i].mov_est()
     }
@@ -128,26 +163,48 @@ function atualiza(){
     colisao()
 }
 
+
+let tempoCooldown = ARMA_COOLDOWN
 function bala(){
-    let tempoCooldown = 6
+
+    // ----- Tiro -----
     if(keysAtivas.J == true){
         tempoCooldown++
-        if(tempoCooldown)
+        if(tempoCooldown == ARMA_COOLDOWN+1){
+            tempoCooldown = 1
+            balas.push(new Bala(player.x+50,player.y+47, 50, 20, 'aquamarine'))
+            console.log(balas)
+        }
     }else{
-        tempoCooldown = 6
+        tempoCooldown = ARMA_COOLDOWN
+    }
+
+    // ----- Remover balas -----
+    if(balas[0] !== undefined){
+        if(balas[0].x > 2200){
+            balas.shift()
+        }
     }
 }
 
+function spawnInimigo(){
+    inimigos.push(new Inimigo(2200, numAleatorio(50, 1030), 75, 75, 'yellow'))
+}
+    
 
 
-// ---------- Principal ----------
+
+// -------------------- Principal --------------------
 function main(){
-    des.clearRect(0,0,1920,1080)
+    des.clearRect(0,0,2920,1080)
     desenha()
     atualiza()
-    bala()
 }
 
 main()
+bala()
+spawnInimigo()
 
 setInterval(main, 16.667)
+setInterval(bala, 16.667*ARMA_COOLDOWN/2)
+setInterval(spawnInimigo, 12000/FREQUENCIA_INIMIGO)
