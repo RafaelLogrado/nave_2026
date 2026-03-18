@@ -21,14 +21,11 @@ let estrelas = [
     new Estrela(40, 1094, 5, 5, 'white')
 ]
 
-let player = new Carro(20, 625, 115, 115, 'red')
+let player = new Nave(20, 485, 138, 180, 'red')
 
-let inimigos = [
-]
+let inimigos = []
 
-let balas = [
-
-]
+let balas = []
 
 
 
@@ -131,7 +128,6 @@ function desenha(){
     }
 
     player.des_quad()
-   
 }
 
 
@@ -164,6 +160,8 @@ function atualiza(){
 }
 
 
+
+// ----- Sistema das balas -----
 let tempoCooldown = ARMA_COOLDOWN
 function bala(){
 
@@ -172,7 +170,7 @@ function bala(){
         tempoCooldown++
         if(tempoCooldown == ARMA_COOLDOWN+1){
             tempoCooldown = 1
-            balas.push(new Bala(player.x+50,player.y+47, 50, 20, 'aquamarine'))
+            balas.push(new Bala(player.x+100,player.y+80, 50, 20, 'aquamarine'))
             console.log(balas)
         }
     }else{
@@ -187,8 +185,18 @@ function bala(){
     }
 }
 
+
+
+// ----- Sistema dos inimigos -----
 function spawnInimigo(){
-    inimigos.push(new Inimigo(2200, numAleatorio(50, 1030), 75, 75, 'yellow'))
+    inimigos.push(new Inimigo(2200, numAleatorio(50, 955), 75, 75, 'yellow'))
+
+    // ----- Remover inimigos -----
+    if(inimigos[0] !== undefined){
+        if(inimigos[0].x < -100){
+            inimigos.shift
+        }
+    }
 }
     
 

@@ -30,7 +30,7 @@ class Obj{
     }
 }
 
-class Carro extends Obj{
+class Nave extends Obj{
     
 
     dirY = 0
@@ -54,8 +54,8 @@ class Carro extends Obj{
         this.y += this.dirY
         if(this.y < 15){
             this.y = 15
-        }else if(this.y > 950){
-            this.y = 950
+        }else if(this.y > 885){
+            this.y = 885
         }
 
         // ----- MOVIMENTAÇÃO DO EIXO X -----
@@ -92,10 +92,6 @@ class Inimigo extends Obj{
     
     mov_car(){
         this.x -= 8
-        if(this.x < -110){
-            this.x = 2020
-            this.y = numAleatorio(15, 965)
-        }
     }
 }
 
