@@ -1,13 +1,7 @@
 let des = document.getElementById('desenho').getContext('2d')
 
 
-// ---------- Constantes ----------
-const ARMA_COOLDOWN = 5
-const FREQUENCIA_INIMIGO = 12
-
-
-
-// ---------- Objetos na cena ----------
+// --------------- Objetos na cena ---------------
 let estrelas = [
     new Estrela(1912, 57, 5, 5, 'white'),
     new Estrela(1704, 172, 5, 5, 'white'),
@@ -21,7 +15,8 @@ let estrelas = [
     new Estrela(40, 1094, 5, 5, 'white')
 ]
 
-let player = new Nave(20, 485, 138, 180, 'red')
+
+let player = new Nave(20, 485, 138, 180, './img/player/player_parado.png')
 
 let inimigos = []
 
@@ -81,12 +76,6 @@ document.addEventListener('keyup', (e)=>{
 
 // -------------------- Funções principais --------------------
 
-// ---------- Utilidades ----------
-function numAleatorio(min, max){
-    return Math.random() * (max - min) + min
-}
-
-
 
 // ----- Detectar colisões na tela -----
 function colisao(){
@@ -127,7 +116,9 @@ function desenha(){
         balas[i].des_quad()
     }
 
-    player.des_quad()
+    // Player
+    player.des_nave()
+
 }
 
 
@@ -136,13 +127,17 @@ function desenha(){
 function atualiza(){
     // Player
     player.mov_car(keysAtivas)
+    player.anim(`player_frente/player_frente_`)
+    player.atirar(keysAtivas)
 
     // Balas
     for(i=0; i < balas.length; i++){
         balas[i].mov_bala()
     }
+    
 
     // Inimigos
+    player.spawnInimigo()
     for(i=0;i<inimigos.length;i++){
         inimigos[i].mov_car()
         if(inimigos[i].x == 1970 && player.vida > 0){
@@ -150,6 +145,7 @@ function atualiza(){
             console.log(`PONTOS: ${player.pontos}`)
         }
     }
+
 
     // Estrelas
     for(i=0;i<estrelas.length;i++){
@@ -161,58 +157,29 @@ function atualiza(){
 
 
 
-// ----- Sistema das balas -----
-let tempoCooldown = ARMA_COOLDOWN
-function bala(){
-
-    // ----- Tiro -----
-    if(keysAtivas.J == true){
-        tempoCooldown++
-        if(tempoCooldown == ARMA_COOLDOWN+1){
-            tempoCooldown = 1
-            balas.push(new Bala(player.x+100,player.y+80, 50, 20, 'aquamarine'))
-            console.log(balas)
-        }
-    }else{
-        tempoCooldown = ARMA_COOLDOWN
-    }
-
-    // ----- Remover balas -----
-    if(balas[0] !== undefined){
-        if(balas[0].x > 2200){
-            balas.shift()
-        }
-    }
-}
-
-
-
-// ----- Sistema dos inimigos -----
-function spawnInimigo(){
-    inimigos.push(new Inimigo(2200, numAleatorio(50, 955), 75, 75, 'yellow'))
-
-    // ----- Remover inimigos -----
-    if(inimigos[0] !== undefined){
-        if(inimigos[0].x < -100){
-            inimigos.shift
-        }
-    }
-}
-    
-
-
-
 // -------------------- Principal --------------------
+
+let frameCount = 0
+let fps = 60
+let intervalo = 1000/fps
+let antes = Date.now()
+let agora, passado
+
+
 function main(){
-    des.clearRect(0,0,2920,1080)
-    desenha()
-    atualiza()
+
+    agora = Date.now()
+    passado = agora - antes
+
+    if(passado > intervalo) {
+        antes = agora - (passado % intervalo)
+
+        des.clearRect(0,0,2920,1080)
+        desenha()
+        atualiza()
+    }
+
+    requestAnimationFrame(main)
 }
 
 main()
-bala()
-spawnInimigo()
-
-setInterval(main, 16.667)
-setInterval(bala, 16.667*ARMA_COOLDOWN/2)
-setInterval(spawnInimigo, 12000/FREQUENCIA_INIMIGO)

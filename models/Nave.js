@@ -16,6 +16,12 @@ class Obj{
         des.fillRect(this.x, this.y, this.w, this.h, this.a)
     }
 
+    des_nave(){
+        let img = new Image()
+        img.src = this.a
+        des.drawImage(img, this.x, this.y, this.w, this.h)
+    }
+
     colid(objeto){
         if(objeto !== undefined){
             if(this.x < objeto.x + objeto.w &&
@@ -39,7 +45,12 @@ class Nave extends Obj{
     vida = 3
     pontos = 0
     velocidade = 7
+    armaCooldown = 14
+    tempoCooldown = this.armaCooldown
 
+
+
+    // ---------------
     mov_car(keysAtivas){
 
         // ----- MOVIMENTAÇÃO DO EIXO Y -----
@@ -75,10 +86,58 @@ class Nave extends Obj{
         }
     }
 
-    atirar(keysAtivas){
-        if(keysAtivas.J == true){
 
+
+    // --------------- Sistema de atirar ---------------
+    atirar(keysAtivas){
+        // ----- Tiro -----
+        if(keysAtivas.J == true){
+            this.tempoCooldown++
+            if(this.tempoCooldown == this.armaCooldown+1){
+                this.tempoCooldown = 1
+                balas.push(new Bala(this.x+100,this.y+80, 50, 20, 'aquamarine'))
+                console.log(balas)
+            }
+        }else{
+            this.tempoCooldown = this.armaCooldown
         }
+
+        // ----- Remover balas -----
+        if(balas[0] !== undefined){
+            if(balas[0].x > 2200){
+                balas.shift()
+            }
+        }
+    }
+
+
+
+    // --------------- Spawn de inimigos ---------------
+    frequencia = 1
+    intervalo = 1000/this.frequencia
+    antes = Date.now()
+    agora
+    passado
+
+    spawnInimigo(){ // Faz inimigos aparecerem
+        this.agora = Date.now()
+        this.passado = this.agora - this.antes
+
+        if(this.passado > this.intervalo){
+            this.antes = this.agora - (this.passado % this.intervalo)
+            inimigos.push(new Inimigo(2200, numAleatorio(50, 955), 75, 75, 'yellow'))
+
+            // -- Remover inimigos --
+            if(inimigos[0] !== undefined){
+                if(inimigos[0].x < -100){
+                    inimigos.shift
+                }
+            }
+        }   
+    }
+
+    anim(nome){
+
     }
 }
 
@@ -90,9 +149,15 @@ class Bala extends Obj{
 
 class Inimigo extends Obj{
     
-    mov_car(){
+
+
+
+    mov_car(){ // Atualiza posição do inimigo
         this.x -= 8
     }
+
+
+    
 }
 
 class Estrela extends Obj{
