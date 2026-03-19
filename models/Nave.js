@@ -24,7 +24,6 @@ class Obj{
 
     colid(objeto){
         if(objeto !== undefined){
-            console.log(objeto)
             if(objeto == player){
                 if(this.x < objeto.x + objeto.hitboxW &&
                     this.x + this.w > objeto.x &&
@@ -53,7 +52,6 @@ class Nave extends Obj{
 
     hitboxW = this.w*0.8 
     
-
     dirY = 0
     dirX = 0
 
@@ -113,7 +111,6 @@ class Nave extends Obj{
             if(this.tempoCooldown == this.armaCooldown+1){
                 this.tempoCooldown = 1
                 balas.push(new Bala(this.x+100,this.y+80, 50, 20, 'aquamarine'))
-                console.log(balas)
             }
         }else{
             this.tempoCooldown = this.armaCooldown
