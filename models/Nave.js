@@ -44,14 +44,16 @@ class Nave extends Obj{
 
     vida = 3
     pontos = 0
-    velocidade = 7
+    velocidade = 8
     armaCooldown = 14
     tempoCooldown = this.armaCooldown
+    frame = 1
+    tempo = 0
 
 
 
-    // ---------------
-    mov_car(keysAtivas){
+    // --------------- Movimentação ---------------
+    mov_car(){
 
         // ----- MOVIMENTAÇÃO DO EIXO Y -----
         if(keysAtivas.W == true && keysAtivas.S == false){
@@ -89,7 +91,7 @@ class Nave extends Obj{
 
 
     // --------------- Sistema de atirar ---------------
-    atirar(keysAtivas){
+    atirar(){
         // ----- Tiro -----
         if(keysAtivas.J == true){
             this.tempoCooldown++
@@ -110,6 +112,24 @@ class Nave extends Obj{
         }
     }
 
+
+    // ---------- Animação ----------
+    anim(nome){
+        this.tempo++
+        if(this.tempo > 12){
+            this.tempo = 0
+            this.frame++
+        }
+        if(this.frame > 2){
+            this.frame = 1
+        }
+
+        if(this.dirX > 1){
+            this.a = './img/player/player_frente/player_frente_'+this.frame+'.png'
+        }else{
+            this.a = './img/player/player_parado.png'
+        }
+    }
 
 
     // --------------- Spawn de inimigos ---------------
@@ -134,10 +154,6 @@ class Nave extends Obj{
                 }
             }
         }   
-    }
-
-    anim(nome){
-
     }
 }
 
