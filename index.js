@@ -1,4 +1,5 @@
 let des = document.getElementById('desenho').getContext('2d')
+let estado = 'jogo'
 
 
 // --------------- Objetos na cena ---------------
@@ -21,6 +22,12 @@ let player = new Nave(20, 485, 138, 180, './img/player/player_parado.png')
 let inimigos = []
 
 let balas = []
+
+
+
+// --------------- Texto ---------------
+let textVida = new Text()
+let textPonto = new Text()
 
 
 
@@ -84,9 +91,9 @@ function colisao(){
             player.vida -= 1
             console.log(`VIDA: ${player.vida}`) 
             inimigos.splice(i, 1)
+            player.pontos -= 5
         }
         for(j=0;j<balas.length;j++){
-            console.log(balas[j].colid(inimigos[i]))
             if(balas[j].colid(inimigos[i]) && player.vida > 0){
                 player.pontos += 5
                 console.log(`PONTOS: ${player.pontos}`)
@@ -119,6 +126,10 @@ function desenha(){
 
     // Player
     player.des_nave()
+
+    // Texto
+    textVida.des_text('Vida: ' + player.vida, 40, 40, 'white', '26px Arial')
+    textPonto.des_text('Pontuação: ' + player.pontos, 870, 40, 'white', '26px Arial')
 
 }
 
@@ -175,9 +186,11 @@ function main(){
     if(passado > intervalo) {
         antes = agora - (passado % intervalo)
 
-        des.clearRect(0,0,2920,1080)
-        desenha()
-        atualiza()
+        if(estado == 'jogo'){
+            des.clearRect(0,0,2920,1080)
+            desenha()
+            atualiza()
+        }
     }
 
     requestAnimationFrame(main)

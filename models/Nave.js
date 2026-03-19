@@ -175,7 +175,8 @@ class Nave extends Obj{
             // -- Remover inimigos --
             if(inimigos[0] !== undefined){
                 if(inimigos[0].x < -100){
-                    inimigos.shift
+                    inimigos.shift()
+                    player.pontos -= 10
                 }
             }
         }   
@@ -200,5 +201,14 @@ class Estrela extends Obj{
         if(this.x < -50){
             this.x = 1970
         }
+    }
+}
+
+class Text{
+    des_text(text,x,y,cor,font){
+        des.fillStyle = cor
+        des.lineWidth = '5'
+        des.font = font
+        des.fillText(text,x,y)
     }
 }
