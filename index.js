@@ -80,12 +80,13 @@ document.addEventListener('keyup', (e)=>{
 // ----- Detectar colisões na tela -----
 function colisao(){
     for(i=0;i<inimigos.length;i++){
-        if(player.colid(inimigos[i])){
+        if(player.colisao(inimigos[i])){
             player.vida -= 1
-            console.log(`VIDA: ${player.vida}`)
-            inimigos[i].y = 1270
+            console.log(`VIDA: ${player.vida}`) 
+            inimigos.splice(i, 1)
         }
         for(j=0;j<balas.length;j++){
+            console.log(balas[j].colid(inimigos[i]))
             if(balas[j].colid(inimigos[i]) && player.vida > 0){
                 player.pontos += 5
                 console.log(`PONTOS: ${player.pontos}`)

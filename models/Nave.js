@@ -24,19 +24,34 @@ class Obj{
 
     colid(objeto){
         if(objeto !== undefined){
-            if(this.x < objeto.x + objeto.w &&
-                this.x + this.w > objeto.x &&
-                this.y < objeto.y + objeto.h &&
-                this.y + this.h > objeto.y){
-                return true
+            console.log(objeto)
+            if(objeto == player){
+                if(this.x < objeto.x + objeto.hitboxW &&
+                    this.x + this.w > objeto.x &&
+                    this.y < objeto.y + objeto.h &&
+                    this.y + this.h > objeto.y){
+                    return true
+                }else{
+                    return false
+                }
             }else{
-                return false
+                if(this.x < objeto.x + objeto.w &&
+                    this.x + this.w > objeto.x &&
+                    this.y < objeto.y + objeto.h &&
+                    this.y + this.h > objeto.y){
+                    return true
+                }else{
+                    return false
+                }
             }
+            
         }
     }
 }
 
 class Nave extends Obj{
+
+    hitboxW = this.w*0.8 
     
 
     dirY = 0
@@ -114,7 +129,7 @@ class Nave extends Obj{
 
 
     // ---------- Animação ----------
-    anim(nome){
+    anim(){
         this.tempo++
         if(this.tempo > 12){
             this.tempo = 0
@@ -128,6 +143,19 @@ class Nave extends Obj{
             this.a = './img/player/player_frente/player_frente_'+this.frame+'.png'
         }else{
             this.a = './img/player/player_parado.png'
+        }
+    }
+
+
+    // ---------- Colisão com hitbox ----------
+    colisao(objeto){
+        if(this.x < objeto.x + objeto.w &&
+            this.x + this.hitboxW > objeto.x &&
+            this.y < objeto.y + objeto.h &&
+            this.y + this.h > objeto.y){
+            return true
+        }else{
+            return false
         }
     }
 
@@ -164,16 +192,9 @@ class Bala extends Obj{
 }
 
 class Inimigo extends Obj{
-    
-
-
-
     mov_car(){ // Atualiza posição do inimigo
         this.x -= 8
     }
-
-
-    
 }
 
 class Estrela extends Obj{
