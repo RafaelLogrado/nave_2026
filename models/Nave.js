@@ -1,5 +1,5 @@
 function numAleatorio(min, max) {
-    return Math.floor(Math.random() * (max - min) + min)
+    return Math.round(Math.random() * (max - min) + min)
 }
 
 class Obj{
@@ -10,6 +10,8 @@ class Obj{
         this.h = h
         this.a = a
     }
+
+    framePart = 0
 
     des_quad(){
         des.fillStyle = this.a
@@ -65,8 +67,9 @@ class Nave extends Obj{
 
 
 
+
     // --------------- Movimentação ---------------
-    mov_car(){
+    mov_nav(){
 
         // ----- MOVIMENTAÇÃO DO EIXO Y -----
         if(keysAtivas.W == true && keysAtivas.S == false){
@@ -133,13 +136,38 @@ class Nave extends Obj{
             this.frame++
         }
         if(this.frame > 2){
-            this.frame = 1
+            this.frame = 0
         }
 
-        if(this.dirX > 1){
-            this.a = './img/player/player_frente/player_frente_'+this.frame+'.png'
-        }else{
+        if(this.dirX < -1){
             this.a = './img/player/player_parado.png'
+        }else{
+            this.a = './img/player/player_frente/player_frente_'+this.frame+'.png'
+        }
+    }
+
+
+    // ---------- Sistema de Partículas ----------
+    partCores = [`brown`, `coral`, `darkred`, `lightsalmon`, `peachpuff`]
+
+    criarParticula(){
+        if(particulas.length>=(inimigos.length * 6 + 6)){
+            particulas.shift()
+        }
+
+        if(particulas[0] != undefined){
+            if(particulas[0].x < -100){
+                particulas.shift()
+            }
+        }
+
+        if(this.framePart<=4){
+            this.framePart++
+        }else{
+            this.framePart = 1
+            if(keysAtivas.A == false){
+                particulas.push(new Particula(this.x+10, this.y+86+(Math.random()*10-5), 12, 12, this.partCores[numAleatorio(0, this.partCores.length-1)], `Player`))
+            }
         }
     }
 
@@ -155,32 +183,6 @@ class Nave extends Obj{
             return false
         }
     }
-
-
-    // --------------- Spawn de inimigos ---------------
-    frequencia = 1
-    intervalo = 1000/this.frequencia
-    antes = Date.now()
-    agora
-    passado
-
-    spawnInimigo(){ // Faz inimigos aparecerem
-        this.agora = Date.now()
-        this.passado = this.agora - this.antes
-
-        if(this.passado > this.intervalo){
-            this.antes = this.agora - (this.passado % this.intervalo)
-            inimigos.push(new Inimigo(2200, numAleatorio(50, 955), 75, 75, 'yellow'))
-
-            // -- Remover inimigos --
-            if(inimigos[0] !== undefined){
-                if(inimigos[0].x < -100){
-                    inimigos.shift()
-                    player.pontos -= 10
-                }
-            }
-        }   
-    }
 }
 
 class Bala extends Obj{
@@ -189,9 +191,73 @@ class Bala extends Obj{
     }
 }
 
-class Inimigo extends Obj{
-    mov_car(){ // Atualiza posição do inimigo
+class InimigoBasico extends Obj{
+    mov_nav(){
         this.x -= 8
+    }
+
+
+    // ---------- Sistema de Partículas ----------
+    
+
+    partCores = ['aquamarine', 'darkturquoise', 'azure']
+
+    criarParticula(){
+        if(particulas.length>=(inimigos.length * 6 + 6)){
+            particulas.shift()
+        }
+
+        if(particulas[0] != undefined){
+            if(particulas[0].x < -100){
+                particulas.shift()
+            }
+        }
+
+        if(this.framePart<=6){
+            this.framePart++
+        }else{
+            this.framePart = 1
+            particulas.push(new Particula(this.x+110, this.y+56, 8, 8, this.partCores[numAleatorio(0, this.partCores.length-1)], `InimigoBasico`))
+        }
+
+    }
+}
+
+class Particula extends Obj{
+    constructor(x,y,w,h,a,tipo){
+        super(x,y,w,h,a)
+
+        this.tipo = tipo
+    }
+
+    dirX = 0
+    dirY = 0
+
+    debounce = true
+
+    mov_part(){
+        if(this.debounce===true){
+            // ---------- Movimentação das partículas
+            switch(this.tipo){
+                case `InimigoBasico`:
+                    this.debounce = false
+                    this.dirX = -7 + Math.random()
+                    this.dirY = (Math.random()-0.5)*1.5
+                    break;
+                case `Player`:
+                    this.debounce = false
+                    if(keysAtivas.D == true){
+                        this.dirX = -7 + Math.random()
+                    }else{
+                        this.dirX = -5 - Math.random()
+                    }
+                    this.dirY = (Math.random()-0.5)*3
+                    break;
+            }
+        }
+        
+        this.x += this.dirX
+        this.y += this.dirY
     }
 }
 
@@ -210,5 +276,32 @@ class Text{
         des.lineWidth = '5'
         des.font = font
         des.fillText(text,x,y)
+    }
+}
+
+class Fase{
+    // --------------- Spawn de inimigos ---------------
+    frequencia = 0.6
+    intervalo = 1000/this.frequencia
+    antes = Date.now()
+    agora
+    passado
+
+    spawnInimigo(){ // Faz inimigos aparecerem
+        this.agora = Date.now()
+        this.passado = this.agora - this.antes
+
+        if(this.passado > this.intervalo){
+            this.antes = this.agora - (this.passado % this.intervalo)
+            inimigos.push(new InimigoBasico(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigobasico.png'))
+
+            // -- Remover inimigos --
+            if(inimigos[0] !== undefined){
+                if(inimigos[0].x < -100){
+                    inimigos.shift()
+                    player.pontos -= 10
+                }
+            }
+        }   
     }
 }

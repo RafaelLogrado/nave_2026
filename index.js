@@ -1,6 +1,7 @@
 let des = document.getElementById('desenho').getContext('2d')
 let estado = 'jogo'
 
+let fase = new Fase()
 
 // --------------- Objetos na cena ---------------
 let estrelas = [
@@ -22,6 +23,8 @@ let player = new Nave(20, 485, 138, 180, './img/player/player_parado.png')
 let inimigos = []
 
 let balas = []
+
+let particulas = []
 
 
 
@@ -89,14 +92,12 @@ function colisao(){
     for(i=0;i<inimigos.length;i++){
         if(player.colisao(inimigos[i])){
             player.vida -= 1
-            console.log(`VIDA: ${player.vida}`) 
             inimigos.splice(i, 1)
             player.pontos -= 5
         }
         for(j=0;j<balas.length;j++){
             if(balas[j].colid(inimigos[i]) && player.vida > 0){
                 player.pontos += 5
-                console.log(`PONTOS: ${player.pontos}`)
                 inimigos.splice(i, 1)
                 balas.splice(j, 1)
             }
@@ -116,7 +117,13 @@ function desenha(){
 
     // Inimigos
     for(i=0;i<inimigos.length;i++){
-        inimigos[i].des_quad()
+        inimigos[i].des_nave()
+        inimigos[i].criarParticula()
+    }
+
+    // Partículas dos inimigos
+    for(i+0;i<particulas.length;i++){
+        particulas[i].des_quad()
     }
 
     // Balas
@@ -126,6 +133,8 @@ function desenha(){
 
     // Player
     player.des_nave()
+    player.criarParticula()
+
 
     // Texto
     textVida.des_text('Vida: ' + player.vida, 40, 40, 'white', '26px Arial')
@@ -138,9 +147,10 @@ function desenha(){
 // ----- Mover objetos na tela -----
 function atualiza(){
     // Player
-    player.mov_car(keysAtivas)
+    player.mov_nav(keysAtivas)
     player.anim(`player_frente/player_frente_`)
     player.atirar(keysAtivas)
+
 
     // Balas
     for(i=0; i < balas.length; i++){
@@ -149,20 +159,22 @@ function atualiza(){
     
 
     // Inimigos
-    player.spawnInimigo()
+    fase.spawnInimigo()
     for(i=0;i<inimigos.length;i++){
-        inimigos[i].mov_car()
-        if(inimigos[i].x == 1970 && player.vida > 0){
-            player.pontos += 5
-            console.log(`PONTOS: ${player.pontos}`)
-        }
+        // Atualizar posição
+        inimigos[i].mov_nav()
     }
 
+    // Partículas dos inimigos
+    for(i=0;i<particulas.length;i++){
+        particulas[i].mov_part()
+    }
 
     // Estrelas
     for(i=0;i<estrelas.length;i++){
         estrelas[i].mov_est()
     }
+
 
     colisao()
 }
