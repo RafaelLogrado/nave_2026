@@ -382,6 +382,14 @@ class Fase{
 
         console.log(tempo)
         console.log(this.padraoCont)
+
+        if(inimigos[0] !== undefined){
+            if(inimigos[0].x < -100){
+                inimigos.shift()
+                player.pontos -= 10
+            }
+        }
+        
         if(this.passado > tempo/this.frequencia){
             this.antes = this.agora - (this.passado % tempo)
 
@@ -399,12 +407,6 @@ class Fase{
             }
 
             // -- Remover inimigos --
-            if(inimigos[0] !== undefined){
-                if(inimigos[0].x < -100){
-                    inimigos.shift()
-                    player.pontos -= 10
-                }
-            }
         }   
     }
 }
