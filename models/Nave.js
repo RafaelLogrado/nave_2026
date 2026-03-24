@@ -191,7 +191,46 @@ class Bala extends Obj{
     }
 }
 
+class Efeito extends Obj{
+
+    constructor(x,y,w,h,a,tipo){
+        super(x,y,w,h,a)
+
+        this.tipo = tipo
+    }
+    
+    frame = 1
+    tempo = 0
+    
+    anim(){
+        this.tempo++
+        switch(this.tipo){
+            case 'ImpactoBala':
+                if(this.tempo > 4){
+                    this.tempo = 0
+                    this.frame++
+                }
+                if(this.frame > 3){
+                    let debounce = true
+                    for(i=0;i<efeitos.length;i++){
+                        if(efeitos[i].tipo = 'ImpactoBala'){
+                            efeitos.splice(i, 1)
+                        }
+                    }
+                }
+        
+                this.a = './img/efeitos/bala_efeito/bala_efeito_'+this.frame+'.png'
+                break
+        }
+        
+    }
+}
+
 class InimigoBasico extends Obj{
+    
+    vida = 3
+
+
     mov_nav(){
         this.x -= 8
     }
@@ -199,7 +238,6 @@ class InimigoBasico extends Obj{
 
     // ---------- Sistema de Partículas ----------
     
-
     partCores = ['aquamarine', 'darkturquoise', 'azure']
 
     criarParticula(){
@@ -219,6 +257,25 @@ class InimigoBasico extends Obj{
             this.framePart = 1
             particulas.push(new Particula(this.x+110, this.y+56, 8, 8, this.partCores[numAleatorio(0, this.partCores.length-1)], `InimigoBasico`))
         }
+
+    }
+}
+
+class InimigoOnda extends Obj{
+
+    vida = 2
+
+    yInicial = this.y
+
+    mov_nav(){
+        this.x -= 7
+        this.y = this.yInicial + Math.sin(this.x / 150) * 300
+    }
+
+
+    // ---------- Sistema de Partículas ----------
+
+    criarParticula(){
 
     }
 }
@@ -263,7 +320,7 @@ class Particula extends Obj{
 
 class Estrela extends Obj{
     mov_est(){
-        this.x -= 1
+        this.x -= this.w/70
         if(this.x < -50){
             this.x = 1970
         }
@@ -287,13 +344,59 @@ class Fase{
     agora
     passado
 
+    padraoCont = 1
+
+    padrao1 = {
+        1: {
+            temp: 2000,
+            tipo: 'InimigoBasico'
+        },
+        2: {
+            temp: 2000,
+            tipo: 'InimigoBasico'
+        },
+        3: {
+            temp: 500,
+            tipo: 'InimigoOnda'
+        },
+        4: {
+            temp: 3000,
+            tipo: 'InimigoBasico'
+        },
+        5: {
+            temp: 2000,
+            tipo: 'InimigoOnda'
+        },
+        6: {
+            temp: 500,
+            tipo: 'InimigoOnda'
+        },
+    }
+
     spawnInimigo(){ // Faz inimigos aparecerem
         this.agora = Date.now()
         this.passado = this.agora - this.antes
 
-        if(this.passado > this.intervalo){
-            this.antes = this.agora - (this.passado % this.intervalo)
-            inimigos.push(new InimigoBasico(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigobasico.png'))
+        let tempo = this.padrao1[this.padraoCont].temp
+        let padrao1Array = Object.keys(this.padrao1)
+
+        console.log(tempo)
+        console.log(this.padraoCont)
+        if(this.passado > tempo/this.frequencia){
+            this.antes = this.agora - (this.passado % tempo)
+
+            switch(this.padrao1[this.padraoCont].tipo){
+                case 'InimigoBasico':
+                    inimigos.push(new InimigoBasico(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigo_basico.png'))
+                    break
+                case 'InimigoOnda':
+                    inimigos.push(new InimigoOnda(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigo_onda.png'))
+                    break
+            }
+            this.padraoCont++
+            if(this.padraoCont>padrao1Array.length){
+                this.padraoCont = 1
+            }
 
             // -- Remover inimigos --
             if(inimigos[0] !== undefined){

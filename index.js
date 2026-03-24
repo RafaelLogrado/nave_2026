@@ -5,11 +5,11 @@ let fase = new Fase()
 
 // --------------- Objetos na cena ---------------
 let estrelas = [
-    new Estrela(1912, 57, 5, 5, 'white'),
-    new Estrela(1704, 172, 5, 5, 'white'),
-    new Estrela(1288, 403, 5, 5, 'white'),
-    new Estrela(872, 864, 5, 5, 'white'),
-    new Estrela(1080, 518, 5, 5, 'white'),
+    new Estrela(1912, 57, 10, 10, 'white'),
+    new Estrela(1704, 172, 10, 10, 'white'),
+    new Estrela(1288, 403, 10, 10, 'white'),
+    new Estrela(872, 864, 10, 10, 'white'),
+    new Estrela(1080, 518, 10, 10, 'white'),
     new Estrela(248, 288, 5, 5, 'white'),
     new Estrela(664, 749, 5, 5, 'white'),
     new Estrela(456, 634, 5, 5, 'white'),
@@ -24,6 +24,8 @@ let inimigos = []
 
 let balas = []
 
+let efeitos = []
+
 let particulas = []
 
 
@@ -31,6 +33,12 @@ let particulas = []
 // --------------- Texto ---------------
 let textVida = new Text()
 let textPonto = new Text()
+
+
+
+// --------------- Fundo ---------------
+let fundo = new Image()
+fundo.src = './img/background/background_padrao.png'
 
 
 
@@ -97,8 +105,12 @@ function colisao(){
         }
         for(j=0;j<balas.length;j++){
             if(balas[j].colid(inimigos[i]) && player.vida > 0){
-                player.pontos += 5
-                inimigos.splice(i, 1)
+                efeitos.push(new Efeito(balas[j].x + balas[j].w - 24, balas[j].y + balas[j].h/2 - 24, 48, 48, './img/efeitos/bala_efeito/bala_efeito_0.png', 'ImpactoBala'))
+                inimigos[i].vida -= 1
+                if(inimigos[i].vida <= 0){
+                    inimigos.splice(i, 1)
+                    player.pontos += 5
+                }
                 balas.splice(j, 1)
             }
         }
@@ -109,6 +121,9 @@ function colisao(){
 
 // ----- Desenhar objetos na tela -----
 function desenha(){
+    
+    // Fundo
+    des.drawImage(fundo, 0, 0, 1920, 1080)
 
     // Estrelas
     for(i=0;i<estrelas.length;i++){
@@ -129,6 +144,12 @@ function desenha(){
     // Balas
     for(i=0;i<balas.length;i++){
         balas[i].des_quad()
+    }
+
+    // Efeitos
+    for(i=0;i<efeitos.length;i++){
+        console.log(efeitos[i])
+        efeitos[i].des_nave()
     }
 
     // Player
@@ -157,6 +178,10 @@ function atualiza(){
         balas[i].mov_bala()
     }
     
+    // Efeitos
+    for(i=0;i<efeitos.length;i++){
+        efeitos[i].anim()
+    }
 
     // Inimigos
     fase.spawnInimigo()
