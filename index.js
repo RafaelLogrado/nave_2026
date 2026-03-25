@@ -38,7 +38,7 @@ let textPonto = new Text()
 
 // --------------- Fundo ---------------
 let fundo = new Image()
-fundo.src = './img/background/background_padrao.png'
+fundo.src = './img/background/background_menosazul.png'
 
 
 

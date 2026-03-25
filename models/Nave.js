@@ -320,7 +320,7 @@ class Particula extends Obj{
 
 class Estrela extends Obj{
     mov_est(){
-        this.x -= this.w/70
+        this.x -= this.w/15
         if(this.x < -50){
             this.x = 1970
         }
