@@ -24,6 +24,8 @@ let inimigos = []
 
 let balas = []
 
+let powerups = []
+
 let efeitos = []
 
 let particulas = []
@@ -106,8 +108,14 @@ function colisao(){
         for(j=0;j<balas.length;j++){
             if(balas[j].colid(inimigos[i]) && player.vida > 0){
                 efeitos.push(new Efeito(balas[j].x + balas[j].w - 24, balas[j].y + balas[j].h/2 - 24, 48, 48, './img/efeitos/bala_efeito/bala_efeito_0.png', 'ImpactoBala'))
-                inimigos[i].vida -= 1
+                inimigos[i].vida -= player.dano
                 if(inimigos[i].vida <= 0){
+
+                    // Spawnar power-up
+                    let powerup = new Powerup(inimigos[i].x, inimigos[i].y, 80, 80, null, null)
+                    powerup.raridade()
+                    powerups.push(powerup)
+
                     inimigos.splice(i, 1)
                     player.pontos += 5
                 }
@@ -116,6 +124,12 @@ function colisao(){
         }
     }
     
+    for(i=0;i<powerups.length;i++){
+        if(player.colid(powerups[i])){
+            powerups[i].powerup()
+            powerups.splice(i, 1)
+        }
+    }
 }
 
 
@@ -130,13 +144,18 @@ function desenha(){
         estrelas[i].des_quad()
     }
 
+    // Powerups
+    for(i=0;i<powerups.length;i++){
+        powerups[i].des_obj()
+    }
+
     // Inimigos
     for(i=0;i<inimigos.length;i++){
-        inimigos[i].des_nave()
+        inimigos[i].des_obj()
         inimigos[i].criarParticula()
     }
 
-    // Partículas dos inimigos
+    // Partículas
     for(i+0;i<particulas.length;i++){
         particulas[i].des_quad()
     }
@@ -148,12 +167,11 @@ function desenha(){
 
     // Efeitos
     for(i=0;i<efeitos.length;i++){
-        console.log(efeitos[i])
-        efeitos[i].des_nave()
+        efeitos[i].des_obj()
     }
 
     // Player
-    player.des_nave()
+    player.des_obj()
     player.criarParticula()
 
 
@@ -181,6 +199,11 @@ function atualiza(){
     // Efeitos
     for(i=0;i<efeitos.length;i++){
         efeitos[i].anim()
+    }
+
+    // Powerups
+    for(i=0;i<powerups.length;i++){
+        powerups[i].mov_pow()
     }
 
     // Inimigos

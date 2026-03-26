@@ -18,10 +18,13 @@ class Obj{
         des.fillRect(this.x, this.y, this.w, this.h, this.a)
     }
 
-    des_nave(){
-        let img = new Image()
-        img.src = this.a
-        des.drawImage(img, this.x, this.y, this.w, this.h)
+    des_obj(){
+        if(this.a != null){
+            let img = new Image()
+            img.src = this.a
+            des.drawImage(img, this.x, this.y, this.w, this.h)
+        }
+        
     }
 
     colid(objeto){
@@ -57,14 +60,20 @@ class Nave extends Obj{
     dirY = 0
     dirX = 0
 
+    // Stats
     vida = 3
     pontos = 0
+    dano = 1
     velocidade = 8
+    baseCooldown = 14
     armaCooldown = 14
     tempoCooldown = this.armaCooldown
     frame = 1
     tempo = 0
 
+    // Power-ups
+    firerate = 0
+    poder = 0
 
 
 
@@ -111,7 +120,7 @@ class Nave extends Obj{
         // ----- Tiro -----
         if(keysAtivas.J == true){
             this.tempoCooldown++
-            if(this.tempoCooldown == this.armaCooldown+1){
+            if(this.tempoCooldown >= this.armaCooldown+1){
                 this.tempoCooldown = 1
                 balas.push(new Bala(this.x+100,this.y+80, 50, 20, 'aquamarine'))
             }
@@ -280,6 +289,50 @@ class InimigoOnda extends Obj{
     }
 }
 
+class Powerup extends Obj{
+    constructor(x,y,w,h,a,tipo){
+        super(x,y,w,h,a)
+
+        this.tipo = tipo
+    }
+
+    dirX = -4
+
+    mov_pow(){
+        this.x += this.dirX
+    }
+
+    raridade(){
+        const rand = Math.random()
+        console.log(rand)
+        if(rand < 0.035){ // 3.5% de chance
+            this.tipo = 'Firerate'
+            this.a = './img/powerup/firerate.png'
+
+        }else if(rand < 0.045){ // 1% de chance
+            this.tipo = 'Poder'
+            this.a = './img/powerup/firerate.png'
+        }else{
+            powerups.splice(powerups.length-1, 1)
+        }
+    }
+
+    powerup(){
+        switch(this.tipo){
+            case 'Firerate':
+                player.firerate ++
+                player.armaCooldown = (player.baseCooldown * (0.9 ** player.firerate)).toFixed(2)
+                player.tempoCooldown = player.armaCooldown
+                console.log(player.firerate)
+                console.log(player.armaCooldown)
+                break
+            case 'Poder':
+                player.poder ++
+                player.dano = (1 + (player.poder * 0.5)).toFixed(1)
+        }
+    }
+}
+
 class Particula extends Obj{
     constructor(x,y,w,h,a,tipo){
         super(x,y,w,h,a)
@@ -290,19 +343,16 @@ class Particula extends Obj{
     dirX = 0
     dirY = 0
 
-    debounce = true
 
     mov_part(){
-        if(this.debounce===true){
+        if(this.dirX === 0){
             // ---------- Movimentação das partículas
             switch(this.tipo){
                 case `InimigoBasico`:
-                    this.debounce = false
                     this.dirX = -7 + Math.random()
                     this.dirY = (Math.random()-0.5)*1.5
                     break;
                 case `Player`:
-                    this.debounce = false
                     if(keysAtivas.D == true){
                         this.dirX = -7 + Math.random()
                     }else{
@@ -346,43 +396,44 @@ class Fase{
 
     padraoCont = 1
 
-    padrao1 = {
-        1: {
+    padrao1 = [
+        {
             temp: 2000,
             tipo: 'InimigoBasico'
         },
-        2: {
+        {
             temp: 2000,
             tipo: 'InimigoBasico'
         },
-        3: {
-            temp: 500,
+        {
+            temp: 2000,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 1500,
             tipo: 'InimigoOnda'
         },
-        4: {
+        {
             temp: 3000,
             tipo: 'InimigoBasico'
         },
-        5: {
+        {
             temp: 2000,
             tipo: 'InimigoOnda'
         },
-        6: {
+        {
             temp: 500,
             tipo: 'InimigoOnda'
         },
-    }
+    ]
 
     spawnInimigo(){ // Faz inimigos aparecerem
         this.agora = Date.now()
         this.passado = this.agora - this.antes
 
         let tempo = this.padrao1[this.padraoCont].temp
-        let padrao1Array = Object.keys(this.padrao1)
 
-        console.log(tempo)
-        console.log(this.padraoCont)
-
+        // --- Remover inimigos ---
         if(inimigos[0] !== undefined){
             if(inimigos[0].x < -100){
                 inimigos.shift()
@@ -402,11 +453,11 @@ class Fase{
                     break
             }
             this.padraoCont++
-            if(this.padraoCont>padrao1Array.length){
-                this.padraoCont = 1
+            if(this.padraoCont>this.padrao1.length-1){
+                this.padraoCont = 0
             }
 
-            // -- Remover inimigos --
+            tempo = this.padrao1[this.padraoCont].temp
         }   
     }
 }
