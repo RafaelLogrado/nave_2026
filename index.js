@@ -116,6 +116,12 @@ function colisao(){
                     powerup.raridade()
                     powerups.push(powerup)
 
+                    for(let k=0;k<powerups.length;k++){
+                        if(powerups[k].tipo === null){
+                            powerups.shift(k, 1)
+                        }
+                    }
+
                     inimigos.splice(i, 1)
                     player.pontos += 5
                 }
@@ -186,9 +192,9 @@ function desenha(){
 // ----- Mover objetos na tela -----
 function atualiza(){
     // Player
-    player.mov_nav(keysAtivas)
-    player.anim(`player_frente/player_frente_`)
-    player.atirar(keysAtivas)
+    player.mov_nav()
+    player.anim()
+    player.atirar()
 
 
     // Balas
@@ -231,7 +237,6 @@ function atualiza(){
 
 // -------------------- Principal --------------------
 
-let frameCount = 0
 let fps = 60
 let intervalo = 1000/fps
 let antes = Date.now()

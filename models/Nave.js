@@ -124,7 +124,7 @@ class Nave extends Obj{
                 this.tempoCooldown = 1
                 balas.push(new Bala(this.x+100,this.y+80, 50, 20, 'aquamarine'))
             }
-        }else{
+        } else{
             this.tempoCooldown = this.armaCooldown
         }
 
@@ -296,12 +296,12 @@ class Powerup extends Obj{
         this.tipo = tipo
     }
 
-    dirX = -4
-
     mov_pow(){
-        this.x += this.dirX
+        this.x += -4
     }
 
+
+    // ----- Chance de cada power-up -----
     raridade(){
         const rand = Math.random()
         console.log(rand)
@@ -311,24 +311,36 @@ class Powerup extends Obj{
 
         }else if(rand < 0.045){ // 1% de chance
             this.tipo = 'Poder'
-            this.a = './img/powerup/firerate.png'
+            this.a = './img/powerup/poder.png'
+
+        }else if(rand < 0.085){ // 4% de chance
+            this.tipo = 'Vida'
+            this.a = './img/powerup/vida.png'
+
         }else{
-            powerups.splice(powerups.length-1, 1)
+            this.tipo = 'Nada'
         }
     }
 
+
+    // ----- Efeito de cada power-up -----
     powerup(){
         switch(this.tipo){
             case 'Firerate':
                 player.firerate ++
                 player.armaCooldown = (player.baseCooldown * (0.9 ** player.firerate)).toFixed(2)
                 player.tempoCooldown = player.armaCooldown
-                console.log(player.firerate)
-                console.log(player.armaCooldown)
                 break
             case 'Poder':
                 player.poder ++
                 player.dano = (1 + (player.poder * 0.5)).toFixed(1)
+                break
+            case 'Vida':
+                if(player.vida < 3){
+                    player.vida ++
+                }else{
+                    player.pontos += 30
+                }
         }
     }
 }
@@ -369,8 +381,11 @@ class Particula extends Obj{
 }
 
 class Estrela extends Obj{
+
+    dirX = this.w/2
+
     mov_est(){
-        this.x -= this.w/15
+        this.x -= this.dirX
         if(this.x < -50){
             this.x = 1970
         }
@@ -441,7 +456,7 @@ class Fase{
             }
         }
         
-        if(this.passado > tempo/this.frequencia){
+        if(this.passado > tempo){
             this.antes = this.agora - (this.passado % tempo)
 
             switch(this.padrao1[this.padraoCont].tipo){
