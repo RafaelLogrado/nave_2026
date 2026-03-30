@@ -355,11 +355,11 @@ function main(){
 
         if(estado == 'jogo'){
             contagem++
-            if(contagem < 100){
+            if(contagem < 2000){
                 fase.mudarFase(1)
-            }else if(contagem < 200){
+            }else if(contagem < 4000){
                 fase.mudarFase(2)
-            }else if(contagem < 300){
+            }else if(contagem < 6000){
                 fase.mudarFase(3)
             }else{
                 estado = 'fim'
