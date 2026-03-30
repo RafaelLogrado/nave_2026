@@ -584,7 +584,9 @@ class Fase{
     tempo = 0
 
     definirFundo(){
-        new Image().src = './img/background/background'+this.fase+'/background'+this.fase+'_'+this.backgroundFrame+'.png'
+        for(let i=0;i<15;i++){
+            precarregarImagem('./img/background/background1/background1_'+i+'.png')
+        }
         this.a = './img/background/background'+this.fase+'/background'+this.fase+'_'+this.backgroundFrame+'.png'
     }
 
