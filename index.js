@@ -316,10 +316,19 @@ function atualiza(){
         // Tela
         jogo.style.display = 'none'
         derrota.style.display = 'block'
-        document.getElementById('pontuacao').innerHTML = `Pontuação: ${players[0].pontos}`
+        document.querySelector('#derrota #pontuacao').innerHTML = `Pontuação: ${players[0].pontos}`
 
     }else if(estado == 'fim'){ // -------------------- FIM DE JOGO --------------------
 
+        // Sons
+        foguete.pause()
+
+        // Tela
+        jogo.style.display = 'none'
+        vitoria.style.display = 'block'
+        document.querySelector('#vitoria #pontuacao').innerHTML = `Pontuação: ${players[0].pontos}`
+        document.querySelector('#vitoria #vidas').innerHTML = `Vidas restantes: ${players[0].vida} (+${players[0].vida*100})`
+        document.querySelector('#vitoria #total').innerHTML = `Pontuação total: ${players[0].pontos + players[0].vida*100}`
     }
 }
 
@@ -346,11 +355,11 @@ function main(){
 
         if(estado == 'jogo'){
             contagem++
-            if(contagem < 2000){
+            if(contagem < 100){
                 fase.mudarFase(1)
-            }else if(contagem < 4000){
+            }else if(contagem < 200){
                 fase.mudarFase(2)
-            }else if(contagem < 6000){
+            }else if(contagem < 300){
                 fase.mudarFase(3)
             }else{
                 estado = 'fim'

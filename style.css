@@ -27,9 +27,17 @@ img, button, h1, h2, p{
     position: absolute;
 }
 
+h1, h2{
+    font-weight: 200;
+}
+
 button img{
     top: 0;
     left: 0;
+}
+
+a{
+    color: white;
 }
 
 
@@ -111,7 +119,7 @@ button img{
 }
 
 #sobre #dev{
-    width: 500px;
+    width: 600px;
     line-height: 4;
     position: absolute;
     left: 300px;
@@ -160,8 +168,13 @@ button img{
 }
 
 #derrota #basico{
-    left:1400px;
+    left: 1400px;
     top: 300px;
+}
+
+#derrota #onda{
+    left: 1500px;
+    top: 700px;
 }
 
 #derrota h2{
@@ -179,5 +192,61 @@ button img{
     width: 300px;
     left: 800px;
     top: 500px;
+    text-align: center;
+}
+
+#derrota #novamente{
+    width: 700px;
+    left: 600px;
+    top: 700px;
+    text-align: center;
+}
+
+
+/* ---------- elementos do vitoria ---------- */
+
+#vitoria{
+    display: none;
+}
+
+#vitoria #text{
+    left: 690px;
+    top: 200px;
+}
+
+#vitoria p{
+    font-size: 3rem;
+}
+
+#vitoria h2{
+    font-size: 4rem;
+    left: 500px;
+    top: 350px;
+}
+
+#vitoria #pontuacao{
+    width: 300px;
+    left: 800px;
+    top: 450px;
+    text-align: center;
+}
+
+#vitoria #vidas{
+    width: 500px;
+    left: 750px;
+    top: 500px;
+}
+
+#vitoria #total{
+    width: 500px;
+    left: 750px;
+    top: 600px;
+    font-size: 3.5rem;
+}
+
+#vitoria #novamente{
+    width: 700px;
+    left: 600px;
+    top: 750px;
     text-align: center;
 }

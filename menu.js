@@ -9,6 +9,7 @@ const menu = document.getElementById('menu')
 const sobre = document.getElementById('sobre')
 const manual = document.getElementById('manual')
 const derrota = document.getElementById('derrota')
+const vitoria = document.getElementById('vitoria')
 
 btnJogar.addEventListener('click', () => {
     estado = 'jogo'
