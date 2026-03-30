@@ -8,7 +8,6 @@
 ### 👨‍💻 Desenvolvedor
 **Nome:** Rafael Queiroz Logrado
 
-### 🖼️ Logotipo / Banner
 ![Space Invasion Banner](./img/texto/spaceinvasion.png)
 
 ---
@@ -71,10 +70,7 @@ Durante a partida, inimigos podem dropar **power-ups**, que concedem melhorias c
 ### 📥 1. Clonagem
 git clone https://github.com/RafaelLogrado/nave_2026
 
-### 📦 2. Instalação de Dependências
-Não há dependências necessárias.
-
-### ▶️ 3. Execução do Projeto
+### ▶️ 2. Execução do Projeto
 
 Abra o arquivo `index.html` diretamente no navegador:
 
@@ -82,5 +78,5 @@ Abra o arquivo `index.html` diretamente no navegador:
 ou
 - Clique com o botão direito → **Abrir com navegador**
 
-### 🌍 4. Versão em Produção
+### 🌍 3. Versão em Produção
 👉 https://space-invasion-raf.vercel.app/
