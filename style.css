@@ -1,3 +1,6 @@
+/* Fontes */
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
 *{
     margin: 0;
     padding: 0;
@@ -5,9 +8,12 @@
 
 body{
     background-color: rgb(61, 61, 61);
+    color:white;
+    font-family: 'Jersey 10';
 }
 
 canvas{
+    display: none;
     margin: auto;
     position: absolute;
     top: 0;
@@ -15,4 +21,124 @@ canvas{
     left: 0;
     right: 0;
     background: rgb(0, 0, 0);
+}
+
+img, button, h1, h2, p{
+    position: absolute;
+}
+
+button img{
+    top: 0;
+    left: 0;
+}
+
+
+/* ---------- elementos do menu ---------- */
+
+#titulo{
+    top: 700px;
+    left: 60px;
+}
+
+#btnJogar{
+    top: 600px;
+    left: 1400px;
+    width: 400px;
+    height: 130px;
+    background: none;
+    border: none;
+}
+
+#btnSobre{
+    top: 750px;
+    left: 1400px;
+    width: 400px;
+    height: 130px;
+    background: none;
+    border: none;
+}
+
+#btnManual{
+    top: 900px;
+    left: 1400px;
+    width: 400px;
+    height: 130px;
+    background: none;
+    border: none;
+}
+
+#btnVoltarSobre{
+    top: 900px;
+    left: 1400px;
+    width: 400px;
+    height: 130px;
+    background: none;
+    border: none;
+}
+
+#btnVoltarManual{
+    top: 900px;
+    left: 1400px;
+    width: 400px;
+    height: 130px;
+    background: none;
+    border: none;
+}
+
+
+/* ---------- elementos do sobre ---------- */
+
+#sobre{
+    display: none;
+}
+
+#sobre h1{
+    left: 880px;
+    top: 60px;
+    font-size: 5rem;
+}
+
+#sobre h2{
+    font-size: 3rem
+}
+
+#sobre p{
+    font-size: 2rem;
+}
+
+#sobre #dev{
+    width: 500px;
+    line-height: 4;
+    position: absolute;
+    left: 300px;
+    top: 200px;
+}
+
+#sobre #po{
+    width: 500px;
+    line-height: 4;
+    position: absolute;
+    left: 800px;
+    top: 200px
+}
+
+
+/* ---------- elementos do manual ---------- */
+
+#manual{
+    display: none;
+}
+
+#manual h1{
+    left: 880px;
+    top: 60px;
+    font-size: 5rem;
+}
+
+#manual h2{
+    font-size: 3rem
+}
+
+#manual p{
+    font-size: 2rem;
 }

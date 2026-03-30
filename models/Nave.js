@@ -29,7 +29,7 @@ class Obj{
 
     colid(objeto){
         if(objeto !== undefined){
-            if(objeto == player){
+            if(objeto == players[0] || objeto == players[1]){
                 if(this.x < objeto.x + objeto.hitboxW &&
                     this.x + this.w > objeto.x &&
                     this.y < objeto.y + objeto.h &&
@@ -114,15 +114,15 @@ class Nave extends Obj{
     }
 
 
-
     // --------------- Sistema de atirar ---------------
     atirar(){
         // ----- Tiro -----
-        if(keysAtivas.J == true){
+        if(keysAtivas.H == true){
             this.tempoCooldown++
             if(this.tempoCooldown >= this.armaCooldown+1){
                 this.tempoCooldown = 1
                 balas.push(new Bala(this.x+100,this.y+80, 50, 20, 'aquamarine'))
+                laserSfx.play(0.15)
             }
         } else{
             this.tempoCooldown = this.armaCooldown
@@ -160,7 +160,7 @@ class Nave extends Obj{
     partCores = [`brown`, `coral`, `darkred`, `lightsalmon`, `peachpuff`]
 
     criarParticula(){
-        if(particulas.length>=(inimigos.length * 6 + 6)){
+        if(particulas.length>=(inimigos.length * 6 + 12)){
             particulas.shift()
         }
 
@@ -194,11 +194,154 @@ class Nave extends Obj{
     }
 }
 
+class Nave2 extends Obj{
+
+    hitboxW = this.w*0.8 
+    
+    dirY = 0
+    dirX = 0
+
+    // Stats
+    vida = 3
+    pontos = 0
+    dano = 1
+    velocidade = 8
+    baseCooldown = 14
+    armaCooldown = 14
+    tempoCooldown = this.armaCooldown
+    frame = 1
+    tempo = 0
+
+    // Power-ups
+    firerate = 0
+    poder = 0
+
+
+
+    // --------------- Movimentação ---------------
+    mov_nav(){
+
+        // ----- MOVIMENTAÇÃO DO EIXO Y -----
+        if(keysAtivas.Up == true && keysAtivas.Down == false){
+            this.dirY = -this.velocidade
+        }else if(keysAtivas.Up == false && keysAtivas.Down == true){
+            this.dirY = this.velocidade
+        }else{
+            this.dirY = 0
+        }
+
+        this.y += this.dirY
+        if(this.y < 15){
+            this.y = 15
+        }else if(this.y > 885){
+            this.y = 885
+        }
+
+        // ----- MOVIMENTAÇÃO DO EIXO X -----
+        if(keysAtivas.Left == true && keysAtivas.Right == false){
+            this.dirX = -this.velocidade
+        }else if(keysAtivas.Left == false && keysAtivas.Right == true){
+            this.dirX = this.velocidade
+        }else{
+            this.dirX = 0
+        }
+
+        this.x += this.dirX
+        if(this.x < 20){
+            this.x = 20
+        }else if(this.x > 1790){
+            this.x = 1790
+        }
+    }
+
+
+    // --------------- Sistema de atirar ---------------
+    atirar(){
+        // ----- Tiro -----
+        if(keysAtivas.L == true){
+            this.tempoCooldown++
+            if(this.tempoCooldown >= this.armaCooldown+1){
+                this.tempoCooldown = 1
+                balas.push(new Bala(this.x+100,this.y+80, 50, 20, 'aquamarine'))
+                laserSfx.play(0.15)
+            }
+        } else{
+            this.tempoCooldown = this.armaCooldown
+        }
+
+        // ----- Remover balas -----
+        if(balas[0] !== undefined){
+            if(balas[0].x > 2200){
+                balas.shift()
+            }
+        }
+    }
+
+
+    // ---------- Animação ----------
+    anim(){
+        this.tempo++
+        if(this.tempo > 12){
+            this.tempo = 0
+            this.frame++
+        }
+        if(this.frame > 2){
+            this.frame = 0
+        }
+
+        if(this.dirX < -1){
+            this.a = './img/player/player2_parado.png'
+        }else{
+            this.a = './img/player/player2_frente/player2_frente_'+this.frame+'.png'
+        }
+    }
+
+
+    // ---------- Sistema de Partículas ----------
+    partCores = [`brown`, `coral`, `darkred`, `lightsalmon`, `peachpuff`]
+
+    criarParticula(){
+        if(particulas.length>=(inimigos.length * 6 + 12)){
+            particulas.shift()
+        }
+
+        if(particulas[0] != undefined){
+            if(particulas[0].x < -100){
+                particulas.shift()
+            }
+        }
+
+        if(this.framePart<=4){
+            this.framePart++
+        }else{
+            this.framePart = 1
+            if(keysAtivas.Left == false){
+                particulas.push(new Particula(this.x+10, this.y+86+(Math.random()*10-5), 12, 12, this.partCores[numAleatorio(0, this.partCores.length-1)], `Player`))
+            }
+        }
+    }
+
+
+    // ---------- Colisão com hitbox ----------
+    colisao(objeto){
+        if(this.x < objeto.x + objeto.w &&
+            this.x + this.hitboxW > objeto.x &&
+            this.y < objeto.y + objeto.h &&
+            this.y + this.h > objeto.y){
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
 class Bala extends Obj{
     mov_bala(){
         this.x += 24
     }
 }
+
+
 
 class Efeito extends Obj{
 
@@ -220,7 +363,6 @@ class Efeito extends Obj{
                     this.frame++
                 }
                 if(this.frame > 3){
-                    let debounce = true
                     for(i=0;i<efeitos.length;i++){
                         if(efeitos[i].tipo = 'ImpactoBala'){
                             efeitos.splice(i, 1)
@@ -304,8 +446,7 @@ class Powerup extends Obj{
     // ----- Chance de cada power-up -----
     raridade(){
         const rand = Math.random()
-        console.log(rand)
-        if(rand < 0.035){ // 3.5% de chance
+        if(rand < 0.85){ // 3.5% de chance
             this.tipo = 'Firerate'
             this.a = './img/powerup/firerate.png'
 
@@ -325,21 +466,26 @@ class Powerup extends Obj{
 
     // ----- Efeito de cada power-up -----
     powerup(){
+        if(this.tipo !== 'Nada'){
+            powerupSfx.play(0.5)
+        }
         switch(this.tipo){
             case 'Firerate':
-                player.firerate ++
-                player.armaCooldown = (player.baseCooldown * (0.9 ** player.firerate)).toFixed(2)
-                player.tempoCooldown = player.armaCooldown
+                for(let p = 0; p<players.length;p++){
+                    players[p].firerate ++
+                    players[p].armaCooldown = (players[p].baseCooldown * (0.9 ** players[p].firerate)).toFixed(2)
+                    players[p].tempoCooldown = players[p].armaCooldown
+                }
                 break
             case 'Poder':
-                player.poder ++
-                player.dano = (1 + (player.poder * 0.5)).toFixed(1)
+                players[0].poder ++
+                players[0].dano = (1 + (players[p].poder * 0.5)).toFixed(1)
                 break
             case 'Vida':
-                if(player.vida < 3){
-                    player.vida ++
+                if(players[0].vida < 3){
+                    players[0].vida ++
                 }else{
-                    player.pontos += 30
+                    players[0].pontos += 30
                 }
         }
     }
@@ -401,10 +547,66 @@ class Text{
     }
 }
 
+class Som{
+    constructor(src, quantidade){
+        this.sfxArray = []
+
+        for(let i=0;i<quantidade;i++){
+            let audio = new Audio(src)
+            audio.preload = 'auto'
+            this.sfxArray.push(audio)
+        }
+    }
+
+    play(volume = 1){
+        let som = this.sfxArray.find(s => s.paused || s.ended) // Acha um áudio disponível
+
+        if(som){
+            som.currentTime = 0
+            som.volume = volume
+            som.play()
+        }else{
+            let substituto = this.sfxArray[0]
+            substituto.currentTime = 0
+            substituto.volume = volume
+            substituto.play()
+        }
+    }
+}
+
 class Fase{
+
+    fase = 1
+    backgroundFrame = 0
+    tempo = 0
+
+    definirFundo(){
+        this.a = './img/background/background'+this.fase+'/background'+this.fase+'_'+this.backgroundFrame+'.png'
+    }
+
+    animarBackground(){
+        this.tempo++
+
+        if(this.tempo>=120){
+            this.tempo = 0
+            this.backgroundFrame++
+            if((this.fase == 1 && this.backgroundFrame>14) || (this.fase == 2 && this.backgroundFrame>0) || (this.fase == 3 && this.backgroundFrame>0)){
+                this.backgroundFrame = 0
+            }
+        }
+    }
+
+    mudarFase(fase){
+        if(this.fase != fase){
+            this.fase = fase
+            this.backgroundFrame = 0
+        }
+        
+        
+    }
+
     // --------------- Spawn de inimigos ---------------
     frequencia = 0.6
-    intervalo = 1000/this.frequencia
     antes = Date.now()
     agora
     passado
@@ -425,7 +627,30 @@ class Fase{
             tipo: 'InimigoBasico'
         },
         {
-            temp: 1500,
+            temp: 3000,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 300,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 1000,
+            tipo: 'InimigoBasico'
+        },
+    ]
+
+    padrao2 = [
+        {
+            temp: 1800,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 1800,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 1000,
             tipo: 'InimigoOnda'
         },
         {
@@ -433,11 +658,39 @@ class Fase{
             tipo: 'InimigoBasico'
         },
         {
-            temp: 2000,
+            temp: 300,
             tipo: 'InimigoOnda'
         },
         {
-            temp: 500,
+            temp: 1000,
+            tipo: 'InimigoOnda'
+        },
+    ]
+
+
+    padrao3 = [
+        {
+            temp: 1000,
+            tipo: 'InimigoOnda'
+        },
+        {
+            temp: 1000,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 200,
+            tipo: 'InimigoOnda'
+        },
+        {
+            temp: 3000,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 300,
+            tipo: 'InimigoBasico'
+        },
+        {
+            temp: 1000,
             tipo: 'InimigoOnda'
         },
     ]
@@ -446,20 +699,29 @@ class Fase{
         this.agora = Date.now()
         this.passado = this.agora - this.antes
 
-        let tempo = this.padrao1[this.padraoCont].temp
+        let padrao
+        if(this.fase == 1){
+            padrao = this.padrao1
+        }else if(this.fase == 2){
+            padrao = this.padrao2
+        }else if(this.fase == 3){
+            padrao = this.padrao3
+        }
+
+        let tempo = padrao[this.padraoCont].temp
 
         // --- Remover inimigos ---
         if(inimigos[0] !== undefined){
             if(inimigos[0].x < -100){
                 inimigos.shift()
-                player.pontos -= 10
+                players[0].pontos -= 30
             }
         }
         
         if(this.passado > tempo){
             this.antes = this.agora - (this.passado % tempo)
 
-            switch(this.padrao1[this.padraoCont].tipo){
+            switch(padrao[this.padraoCont].tipo){
                 case 'InimigoBasico':
                     inimigos.push(new InimigoBasico(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigo_basico.png'))
                     break
@@ -468,11 +730,11 @@ class Fase{
                     break
             }
             this.padraoCont++
-            if(this.padraoCont>this.padrao1.length-1){
+            if(this.padraoCont>padrao.length-1){
                 this.padraoCont = 0
             }
 
-            tempo = this.padrao1[this.padraoCont].temp
+            tempo = padrao[this.padraoCont].temp
         }   
     }
 }

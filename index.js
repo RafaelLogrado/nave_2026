@@ -1,5 +1,5 @@
 let des = document.getElementById('desenho').getContext('2d')
-let estado = 'jogo'
+let estado = 'menu'
 
 let fase = new Fase()
 
@@ -17,8 +17,10 @@ let estrelas = [
     new Estrela(40, 1094, 5, 5, 'white')
 ]
 
-
-let player = new Nave(20, 485, 138, 180, './img/player/player_parado.png')
+let players = [
+    new Nave(20, 485, 138, 180, './img/player/player_parado.png'),
+    new Nave2(20, 485, 138, 180, './img/player/player2_parado.png')
+]
 
 let inimigos = []
 
@@ -31,34 +33,51 @@ let efeitos = []
 let particulas = []
 
 
-
 // --------------- Texto ---------------
 let textVida = new Text()
 let textPonto = new Text()
+let textFase = new Text()
 
+let tituloJogo = new Image()
+tituloJogo.src = './img/texto/spaceinvasion.png'
+
+
+// --------------- Áudio ---------------
+let powerupSfx = new Som('./sfx/powerup.mp3', 6)
+let laserSfx = new Som('./sfx/laser.mp3', 20)
+let foguete = new Audio('./sfx/foguete.mp3')
+foguete.loop = true
+foguete.volume = 0.22
 
 
 // --------------- Fundo ---------------
 let fundo = new Image()
-fundo.src = './img/background/background_menosazul.png'
-
+fundo.src = fase.a
+let carregou = false
 
 
 // --------------- Teclas ---------------
 let keysAtivas = {
-    // Movimentação
-    W : false,
-    A : false,
-    S : false,
-    D : false,
+    // Movimentação P1
+    W: false,
+    A: false,
+    S: false,
+    D: false,
+    // Movimentação P@
+    Up: false,
+    Left: false,
+    Down: false,
+    Right: false,
 
-    // Arma
-    J : false
+    // Arma P1
+    H: false,
+    // Arma P2
+    L: false,
 }
 
 document.addEventListener('keydown', (e)=>{
     let key = e.key.toLowerCase()
-    //  ----- Movimentação -----
+    // ----- Movimentação P1 -----
     if(key == 'w'){  
         keysAtivas.W = true
     }else if(key == 'a'){
@@ -67,17 +86,29 @@ document.addEventListener('keydown', (e)=>{
         keysAtivas.S = true
     }else if(key == 'd'){
         keysAtivas.D = true
-
-    //  ----- Arma -----
-    }else if(key == 'j'){
-        keysAtivas.J = true 
+    // ----- Movimentação P2 -----
+    }else if(key == 'arrowup'){
+        keysAtivas.Up = true
+    }else if(key == 'arrowleft'){
+        keysAtivas.Left = true
+    }else if(key == 'arrowdown'){
+        keysAtivas.Down = true
+    }else if(key == 'arrowright'){
+        keysAtivas.Right = true
+    
+    // ----- Arma P1 -----
+    }else if(key == 'h'){
+        keysAtivas.H = true 
+    // ----- Arma P2
+    }else if(key == 'l'){
+        keysAtivas.L = true 
     }
 })
 
 document.addEventListener('keyup', (e)=>{
     let key = e.key.toLowerCase()
-    // ----- Movimentação -----
-    if(key == 'w'){
+    // ----- Movimentação P1 -----
+    if(key == 'w'){  
         keysAtivas.W = false
     }else if(key == 'a'){
         keysAtivas.A = false
@@ -85,10 +116,22 @@ document.addEventListener('keyup', (e)=>{
         keysAtivas.S = false
     }else if(key == 'd'){
         keysAtivas.D = false
-
-    //  ----- Arma -----
-    }else if(key == 'j'){
-        keysAtivas.J = false
+    // ----- Movimentação P2 -----
+    }else if(key == 'arrowup'){
+        keysAtivas.Up = false
+    }else if(key == 'arrowleft'){
+        keysAtivas.Left = false
+    }else if(key == 'arrowdown'){
+        keysAtivas.Down = false
+    }else if(key == 'arrowright'){
+        keysAtivas.Right = false
+    
+    // ----- Arma P1 -----
+    }else if(key == 'h'){
+        keysAtivas.H = false 
+    // ----- Arma P2
+    }else if(key == 'l'){
+        keysAtivas.L = false 
     }
 })
 
@@ -100,15 +143,20 @@ document.addEventListener('keyup', (e)=>{
 // ----- Detectar colisões na tela -----
 function colisao(){
     for(i=0;i<inimigos.length;i++){
-        if(player.colisao(inimigos[i])){
-            player.vida -= 1
-            inimigos.splice(i, 1)
-            player.pontos -= 5
+        for(p=0;p<players.length;p++){
+            if(players[p].colisao(inimigos[i])){
+                players[0].vida -= 1
+                inimigos.splice(i, 1)
+                players[0].pontos -= 5
+                if(players[0].vida == 0){
+                    estado = 'derrota'
+                }
+            }
         }
         for(j=0;j<balas.length;j++){
-            if(balas[j].colid(inimigos[i]) && player.vida > 0){
+            if(balas[j].colid(inimigos[i])){
                 efeitos.push(new Efeito(balas[j].x + balas[j].w - 24, balas[j].y + balas[j].h/2 - 24, 48, 48, './img/efeitos/bala_efeito/bala_efeito_0.png', 'ImpactoBala'))
-                inimigos[i].vida -= player.dano
+                inimigos[i].vida -= players[0].dano
                 if(inimigos[i].vida <= 0){
 
                     // Spawnar power-up
@@ -123,27 +171,37 @@ function colisao(){
                     }
 
                     inimigos.splice(i, 1)
-                    player.pontos += 5
+                    players[0].pontos += 5
                 }
                 balas.splice(j, 1)
             }
         }
     }
     
-    for(i=0;i<powerups.length;i++){
-        if(player.colid(powerups[i])){
-            powerups[i].powerup()
-            powerups.splice(i, 1)
+    for(p=0;p<players.length;p++){
+        for(i=0;i<powerups.length;i++){
+            if(players[p].colid(powerups[i])){
+                powerups[i].powerup()
+                powerups.splice(i, 1)
+            }
         }
     }
 }
 
 
+
 // ----- Desenhar objetos na tela -----
 function desenha(){
+    if(estado == 'jogo'){ // -------------------- EM JOGO --------------------
     
     // Fundo
-    des.drawImage(fundo, 0, 0, 1920, 1080)
+    
+    fase.definirFundo()
+    fundo.src = fase.a
+    fundo.onload = () => {carregou = true}
+    if(carregou == true){
+        des.drawImage(fundo, 0, 0, 1920, 1080)
+    }
 
     // Estrelas
     for(i=0;i<estrelas.length;i++){
@@ -176,61 +234,86 @@ function desenha(){
         efeitos[i].des_obj()
     }
 
-    // Player
-    player.des_obj()
-    player.criarParticula()
+    // Players
+    for(p=0;p<players.length;p++){
+        players[p].des_obj()
+        players[p].criarParticula()
+    }
 
 
     // Texto
-    textVida.des_text('Vida: ' + player.vida, 40, 40, 'white', '26px Arial')
-    textPonto.des_text('Pontuação: ' + player.pontos, 870, 40, 'white', '26px Arial')
+    textVida.des_text('Vida: ' + players[0].vida, 40, 40, 'white', '26px Arial')
+    textPonto.des_text('Pontuação: ' + players[0].pontos, 870, 40, 'white', '26px Arial')
+    textFase.des_text('Fase: ' + fase.fase, 1800, 40, 'white', '26px Arial')
+
+    }else if(estado == 'derrota'){ // -------------------- DERROTADO --------------------
+
+    }else if(estado == 'fim'){ // -------------------- FIM DE JOGO --------------------
+
+    }
 
 }
 
 
 
-// ----- Mover objetos na tela -----
+// ----- Atualizar elementos na tela -----
 function atualiza(){
-    // Player
-    player.mov_nav()
-    player.anim()
-    player.atirar()
 
+    if(estado == 'jogo'){ // -------------------- EM JOGO --------------------
 
-    // Balas
-    for(i=0; i < balas.length; i++){
-        balas[i].mov_bala()
-    }
+        // Fundo
+        fase.animarBackground()
     
-    // Efeitos
-    for(i=0;i<efeitos.length;i++){
-        efeitos[i].anim()
+        // Player
+        for(p=0;p<players.length;p++){
+            players[p].mov_nav()
+            players[p].anim()
+            players[p].atirar()
+        }
+    
+        // Balas
+        for(i=0; i < balas.length; i++){
+            balas[i].mov_bala()
+        }
+        
+        // Efeitos
+        for(i=0;i<efeitos.length;i++){
+            efeitos[i].anim()
+        }
+    
+        // Powerups
+        for(i=0;i<powerups.length;i++){
+            powerups[i].mov_pow()
+        }
+    
+        // Inimigos
+        fase.spawnInimigo()
+        for(i=0;i<inimigos.length;i++){
+            // Atualizar posição
+            inimigos[i].mov_nav()
+        }
+    
+        // Partículas dos inimigos
+        for(i=0;i<particulas.length;i++){
+            particulas[i].mov_part()
+        }
+    
+        // Estrelas
+        for(i=0;i<estrelas.length;i++){
+            estrelas[i].mov_est()
+        }
+    
+    
+        colisao()
+
+    }else if(estado == 'derrota'){ // -------------------- DERROTADO --------------------
+
+        // Sons
+        foguete.pause()
+
+    }else if(estado == 'fim'){ // -------------------- FIM DE JOGO --------------------
+
     }
-
-    // Powerups
-    for(i=0;i<powerups.length;i++){
-        powerups[i].mov_pow()
-    }
-
-    // Inimigos
-    fase.spawnInimigo()
-    for(i=0;i<inimigos.length;i++){
-        // Atualizar posição
-        inimigos[i].mov_nav()
-    }
-
-    // Partículas dos inimigos
-    for(i=0;i<particulas.length;i++){
-        particulas[i].mov_part()
-    }
-
-    // Estrelas
-    for(i=0;i<estrelas.length;i++){
-        estrelas[i].mov_est()
-    }
-
-
-    colisao()
 }
 
 
@@ -241,6 +324,7 @@ let fps = 60
 let intervalo = 1000/fps
 let antes = Date.now()
 let agora, passado
+let contagem = 0
 
 
 function main(){
@@ -251,11 +335,22 @@ function main(){
     if(passado > intervalo) {
         antes = agora - (passado % intervalo)
 
+        des.clearRect(-500,-400,2920,1880)
+
         if(estado == 'jogo'){
-            des.clearRect(0,0,2920,1080)
-            desenha()
-            atualiza()
+            contagem++
+            if(contagem < 2000){
+                fase.mudarFase(1)
+            }else if(contagem < 4000){
+                fase.mudarFase(2)
+            }else if(contagem < 6000){
+                fase.mudarFase(3)
+            }else{
+                estado = 'fim'
+            }
         }
+        desenha()
+        atualiza()
     }
 
     requestAnimationFrame(main)

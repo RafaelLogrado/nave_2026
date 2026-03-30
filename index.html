@@ -6,9 +6,40 @@
     <link rel="stylesheet" href="./style.css">
     <script src="./models/Nave.js"defer></script>
     <script src="./index.js"defer></script>
-    <title>Game</title>
+    <script src="./menu.js"defer></script>
+    <title>Space Invasion</title>
 </head>
 <body>
     <canvas id="desenho" width="1920" height="1080"></canvas>
+    
+    <div id="menu"> <!------- Elementos do menu ------->
+        <img src="./img/background/background2/background2_0.png">
+        <img src="./img/texto/spaceinvasion.png" id="titulo">
+        <button id="btnJogar"><img src="./img/botao/botaoJogar.png"></button>
+        <button id="btnSobre"><img src="./img/botao/botaoSobre.png"></button>
+        <button id="btnManual"><img src="./img/botao/botaoManual.png"></button>
+    </div>
+
+    <div id="sobre"> <!------- Elementos do sobre ------->
+        <img src="./img/background/background2/background2_0.png">
+        <button id="btnVoltarSobre"><img src="./img/botao/botaoVoltar.png"></button>
+        <h1>Sobre</h1>
+        <div id="dev">
+            <h2>Desenvolvedor</h2><br><br>
+            <p>Nome: Rafael</p><br>
+            <p>GitHub: RafaelLogrado</p><br>
+            <p>Whatsapp: +55 (48) 99611-4834</p>
+        </div>
+        <div id="po">
+            <h2>Product Owner</h2><br><br>
+            <p>Nome: Carlos</p>
+        </div>
+    </div>
+
+    <div id="manual"> <!------- Elementos do sobre ------->
+        <img src="./img/texto/manual.png">
+        <button id="btnVoltarManual"><img src="./img/botao/botaoVoltar.png"></button>
+        <h1>Manual</h1>
+    </div>
 </body>
 </html>
