@@ -482,7 +482,7 @@ class Powerup extends Obj{
                 break
             case 'Poder':
                 players[0].poder ++
-                players[0].dano = (1 + (players[p].poder * 0.5)).toFixed(1)
+                players[0].dano = (1 + (players[0].poder * 0.5)).toFixed(1)
                 break
             case 'Vida':
                 if(players[0].vida < 3){
