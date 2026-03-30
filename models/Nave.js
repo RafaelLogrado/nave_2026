@@ -648,11 +648,11 @@ class Fase{
             tipo: 'InimigoBasico'
         },
         {
-            temp: 300,
+            temp: 700,
             tipo: 'InimigoBasico'
         },
         {
-            temp: 1000,
+            temp: 2000,
             tipo: 'InimigoBasico'
         },
     ]
@@ -705,6 +705,10 @@ class Fase{
         {
             temp: 300,
             tipo: 'InimigoBasico'
+        },
+        {
+            temp: 4000,
+            tipo: 'InimigoOnda'
         },
         {
             temp: 1000,
