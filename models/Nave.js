@@ -324,13 +324,16 @@ class Nave2 extends Obj{
 
     // ---------- Colisão com hitbox ----------
     colisao(objeto){
-        if(this.x < objeto.x + objeto.w &&
-            this.x + this.hitboxW > objeto.x &&
-            this.y < objeto.y + objeto.h &&
-            this.y + this.h > objeto.y){
-            return true
-        }else{
-            return false
+        if(objeto !== undefined){
+
+            if(this.x < objeto.x + objeto.w &&
+                this.x + this.hitboxW > objeto.x &&
+                this.y < objeto.y + objeto.h &&
+                this.y + this.h > objeto.y){
+                return true
+            }else{
+                return false
+            }
         }
     }
 }
@@ -581,6 +584,7 @@ class Fase{
     tempo = 0
 
     definirFundo(){
+        new Image().src = './img/background/background'+this.fase+'/background'+this.fase+'_'+this.backgroundFrame+'.png'
         this.a = './img/background/background'+this.fase+'/background'+this.fase+'_'+this.backgroundFrame+'.png'
     }
 
