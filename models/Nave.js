@@ -559,6 +559,8 @@ class Som{
             audio.preload = 'auto'
             this.sfxArray.push(audio)
         }
+
+        
     }
 
     play(volume = 1){
@@ -578,15 +580,24 @@ class Som{
 }
 
 class Fase{
+    constructor(){
+        // ----- Imagens para pre-carregar -----
+        this.imagensPraCarregar = ['./img/player/player_parado.png', './img/player2/player2_parado.png', './img/inimigos/inimigo_basico.png', './img/inimigos/inimigo_onda.png']
+        for(let i=0;i<3;i++){
+            this.imagensPraCarregar.push('./img/player/player_frente/player_frente_'+i+'.png')
+            this.imagensPraCarregar.push('./img/player/player2_frente/player2_frente_'+i+'.png')
+        }
+
+        for(let i=0;i<15;i++){
+            this.imagensPraCarregar.push('./img/background/background1/background1_'+i+'.png')
+        }
+    }
 
     fase = 1
     backgroundFrame = 0
     tempo = 0
 
     definirFundo(){
-        for(let i=0;i<15;i++){
-            precarregarImagem('./img/background/background1/background1_'+i+'.png')
-        }
         this.a = './img/background/background'+this.fase+'/background'+this.fase+'_'+this.backgroundFrame+'.png'
     }
 
@@ -701,6 +712,8 @@ class Fase{
         },
     ]
 
+    
+
     spawnInimigo(){ // Faz inimigos aparecerem
         this.agora = Date.now()
         this.passado = this.agora - this.antes
@@ -723,10 +736,12 @@ class Fase{
                 players[0].pontos -= 30
             }
         }
+
         
         if(this.passado > tempo){
             this.antes = this.agora - (this.passado % tempo)
 
+            precarregarImagens(this.imagensPraCarregar)
             switch(padrao[this.padraoCont].tipo){
                 case 'InimigoBasico':
                     inimigos.push(new InimigoBasico(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigo_basico.png'))

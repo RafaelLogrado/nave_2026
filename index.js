@@ -3,17 +3,6 @@ let estado = 'menu'
 
 let fase = new Fase()
 
-// --------------- Pre-carregar elementos ---------------
-
-function precarregarImagem(imagem){
-    let img = new Image()
-    img.src = imagem
-}
-for(let i=0;i<15;i++){
-    precarregarImagem('./img/background/background1/background1_'+i+'.png')
-}
-
-
 
 // --------------- Objetos na cena ---------------
 let estrelas = [
@@ -30,7 +19,7 @@ let estrelas = [
 ]
 
 let players = [
-    new Nave(20, 485, 138, 180, './img/player/player_parado.png'),
+    new Nave(20, 785, 138, 180, './img/player/player_parado.png'),
     new Nave2(20, 485, 138, 180, './img/player/player2_parado.png')
 ]
 

@@ -35,3 +35,13 @@ btnVoltarManual.addEventListener('click', () =>{
     menu.style.display = 'block'
     manual.style.display = 'none'
 })
+
+// --------------- Pre-carregar elementos ---------------
+
+function precarregarImagens(imagens){
+    for(let i=0;i<imagens.length;i++){
+        let img = new Image()
+        img.src = imagens[i]
+    }
+}
+
