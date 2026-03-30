@@ -3,6 +3,13 @@ let estado = 'menu'
 
 let fase = new Fase()
 
+// --------------- Carregar elementos ---------------
+
+for(let i=0;i<15;i++){
+    let img = new Image()
+    img.src = './img/background/background1/background1_'+i+'.png'
+}
+
 // --------------- Objetos na cena ---------------
 let estrelas = [
     new Estrela(1912, 57, 10, 10, 'white'),

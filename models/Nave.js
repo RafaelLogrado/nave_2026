@@ -379,7 +379,7 @@ class Efeito extends Obj{
 
 class InimigoBasico extends Obj{
     
-    vida = 3
+    vida = 5
 
 
     mov_nav(){
@@ -414,7 +414,7 @@ class InimigoBasico extends Obj{
 
 class InimigoOnda extends Obj{
 
-    vida = 2
+    vida = 3
 
     yInicial = this.y
 
@@ -446,7 +446,7 @@ class Powerup extends Obj{
     // ----- Chance de cada power-up -----
     raridade(){
         const rand = Math.random()
-        if(rand < 0.85){ // 3.5% de chance
+        if(rand < 0.035){ // 3.5% de chance
             this.tipo = 'Firerate'
             this.a = './img/powerup/firerate.png'
 
