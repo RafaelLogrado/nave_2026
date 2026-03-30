@@ -582,7 +582,7 @@ class Som{
 class Fase{
     constructor(){
         // ----- Imagens para pre-carregar -----
-        this.imagensPraCarregar = ['./img/player/player_parado.png', './img/player2/player2_parado.png', './img/inimigos/inimigo_basico.png', './img/inimigos/inimigo_onda.png']
+        this.imagensPraCarregar = ['./img/player/player_parado.png', './img/player/player2_parado.png', './img/inimigos/inimigo_basico.png', './img/inimigos/inimigo_onda.png']
         for(let i=0;i<3;i++){
             this.imagensPraCarregar.push('./img/player/player_frente/player_frente_'+i+'.png')
             this.imagensPraCarregar.push('./img/player/player2_frente/player2_frente_'+i+'.png')
@@ -741,7 +741,9 @@ class Fase{
         if(this.passado > tempo){
             this.antes = this.agora - (this.passado % tempo)
 
-            precarregarImagens(this.imagensPraCarregar)
+            if(this.padraoCont % 2 == 0){
+                precarregarImagens(this.imagensPraCarregar)
+            }
             switch(padrao[this.padraoCont].tipo){
                 case 'InimigoBasico':
                     inimigos.push(new InimigoBasico(2200, numAleatorio(50, 955), 120, 120, './img/inimigos/inimigo_basico.png'))

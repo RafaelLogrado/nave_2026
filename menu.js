@@ -8,6 +8,7 @@ const jogo = document.getElementById('desenho')
 const menu = document.getElementById('menu')
 const sobre = document.getElementById('sobre')
 const manual = document.getElementById('manual')
+const derrota = document.getElementById('derrota')
 
 btnJogar.addEventListener('click', () => {
     estado = 'jogo'

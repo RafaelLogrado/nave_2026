@@ -312,6 +312,12 @@ function atualiza(){
         // Sons
         foguete.pause()
 
+
+        // Tela
+        jogo.style.display = 'none'
+        derrota.style.display = 'block'
+        document.getElementById('pontuacao').innerHTML = `Pontuação: ${players[0].pontos}`
+
     }else if(estado == 'fim'){ // -------------------- FIM DE JOGO --------------------
 
     }

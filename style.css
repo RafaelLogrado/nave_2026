@@ -35,6 +35,10 @@ button img{
 
 /* ---------- elementos do menu ---------- */
 
+/* #menu{
+    display: none;
+} */
+
 #titulo{
     top: 700px;
     left: 60px;
@@ -141,4 +145,39 @@ button img{
 
 #manual p{
     font-size: 2rem;
+}
+
+
+/* ---------- elementos do derrota ---------- */
+
+#derrota{
+    display: none;
+}
+
+#derrota #text{
+    left: 680px;
+    top: 200px;
+}
+
+#derrota #basico{
+    left:1400px;
+    top: 300px;
+}
+
+#derrota h2{
+    font-weight: 200;
+    font-size: 4rem;
+    left: 700px;
+    top: 370px;
+}
+
+#derrota p{
+    font-size: 3rem;
+}
+
+#derrota #pontuacao{
+    width: 300px;
+    left: 800px;
+    top: 500px;
+    text-align: center;
 }
