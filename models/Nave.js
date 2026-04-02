@@ -382,7 +382,7 @@ class Efeito extends Obj{
 
 class InimigoBasico extends Obj{
     
-    vida = 5
+    vida = 6
 
 
     mov_nav(){
@@ -417,20 +417,13 @@ class InimigoBasico extends Obj{
 
 class InimigoOnda extends Obj{
 
-    vida = 3
+    vida = 4
 
     yInicial = this.y
 
     mov_nav(){
         this.x -= 7
         this.y = this.yInicial + Math.sin(this.x / 150) * 300
-    }
-
-
-    // ---------- Sistema de Partículas ----------
-
-    criarParticula(){
-
     }
 }
 
@@ -648,7 +641,7 @@ class Fase{
             tipo: 'InimigoBasico'
         },
         {
-            temp: 700,
+            temp: 100,
             tipo: 'InimigoBasico'
         },
         {

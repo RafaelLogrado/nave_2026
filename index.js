@@ -199,10 +199,7 @@ function desenha(){
     
     fase.definirFundo()
     fundo.src = fase.a
-    fundo.onload = () => {carregou = true}
-    if(carregou == true){
-        des.drawImage(fundo, 0, 0, 1920, 1080)
-    }
+    des.drawImage(fundo, 0, 0, 1920, 1080)
 
     // Estrelas
     for(i=0;i<estrelas.length;i++){
@@ -246,13 +243,7 @@ function desenha(){
     textVida.des_text('Vida: ' + players[0].vida, 40, 40, 'white', '26px Arial')
     textPonto.des_text('Pontuação: ' + players[0].pontos, 870, 40, 'white', '26px Arial')
     textFase.des_text('Fase: ' + fase.fase, 1800, 40, 'white', '26px Arial')
-
-    }else if(estado == 'derrota'){ // -------------------- DERROTADO --------------------
-
-    }else if(estado == 'fim'){ // -------------------- FIM DE JOGO --------------------
-
     }
-
 }
 
 
@@ -290,7 +281,6 @@ function atualiza(){
         // Inimigos
         fase.spawnInimigo()
         for(i=0;i<inimigos.length;i++){
-            // Atualizar posição
             inimigos[i].mov_nav()
         }
     
