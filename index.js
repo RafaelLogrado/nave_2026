@@ -48,7 +48,7 @@ let powerupSfx = new Som('./sfx/powerup.mp3', 6)
 let laserSfx = new Som('./sfx/laser.mp3', 20)
 let foguete = new Audio('./sfx/foguete.mp3')
 foguete.loop = true
-foguete.volume = 0.22
+foguete.volume = 0.14
 
 
 // --------------- Fundo ---------------
