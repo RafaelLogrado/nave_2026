@@ -48,6 +48,44 @@ A pontuação é acumulada ao derrotar inimigos e pode ser reduzida caso eles es
 
 Durante a partida, inimigos podem dropar **power-ups**, que concedem melhorias como aumento de vida, dano ou velocidade de disparo. Esses bônus ajudam os jogadores a resistirem por mais tempo.
 
+## 📁 Estrutura do Projeto
+
+Abaixo está a **estrutura do projeto**, organizada para facilitar a manutenção, escalabilidade e entendimento do código:
+.
+│   index.html          # Página principal
+│   index.js            # Lógica principal do jogo
+│   menu.js             # Controle do menu
+│   style.css           # Estilização
+│
+│   diagramas_UML.asta  # Arquivo do Astah (diagramas UML)
+│   diagrama_casouso.png
+│   diagrama_classes.png
+│   diagrama_sequencia.png
+│
+│   README.md
+│
+├── img                 # Recursos visuais do jogo
+│   ├── background      # Fundos animados
+│   │   ├── background1
+│   │   ├── background2
+│   │   └── background3
+│   │
+│   ├── botao           # Botões da interface
+│   ├── efeitos         # Efeitos visuais (ex: tiros)
+│   ├── inimigos        # Sprites dos inimigos
+│   ├── player          # Sprites do jogador
+│   ├── powerup         # Itens especiais
+│   └── texto           # Telas e mensagens
+│
+├── models              # Modelos/classes do jogo
+│   └── Nave.js
+│
+└── sfx                 # Efeitos sonoros
+    ├── foguete.mp3
+    ├── laser.mp3
+    └── powerup.mp3
+
+
 ### 👥 Créditos
 
 #### 👨‍💻 Desenvolvedor

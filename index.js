@@ -53,8 +53,6 @@ foguete.volume = 0.22
 
 // --------------- Fundo ---------------
 let fundo = new Image()
-fundo.src = fase.a
-let carregou = false
 
 
 // --------------- Teclas ---------------
@@ -196,7 +194,6 @@ function desenha(){
     if(estado == 'jogo'){ // -------------------- EM JOGO --------------------
     
     // Fundo
-    
     fase.definirFundo()
     fundo.src = fase.a
     des.drawImage(fundo, 0, 0, 1920, 1080)

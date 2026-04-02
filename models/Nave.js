@@ -425,6 +425,10 @@ class InimigoOnda extends Obj{
         this.x -= 7
         this.y = this.yInicial + Math.sin(this.x / 150) * 300
     }
+
+    criarParticula(){
+        
+    }
 }
 
 class Powerup extends Obj{
