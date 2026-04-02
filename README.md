@@ -51,6 +51,8 @@ Durante a partida, inimigos podem dropar **power-ups**, que concedem melhorias c
 ## 📁 Estrutura do Projeto
 
 Abaixo está a **estrutura do projeto**, organizada para facilitar a manutenção, escalabilidade e entendimento do código:
+
+```bash
 .
 │   index.html          # Página principal
 │   index.js            # Lógica principal do jogo
@@ -84,7 +86,7 @@ Abaixo está a **estrutura do projeto**, organizada para facilitar a manutençã
     ├── foguete.mp3
     ├── laser.mp3
     └── powerup.mp3
-
+```
 
 ### 👥 Créditos
 
