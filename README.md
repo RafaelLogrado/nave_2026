@@ -127,10 +127,10 @@ Abaixo está a **estrutura do projeto**, organizada para facilitar a manutençã
 
 ## 3. Instruções de Instalação e Execução
 
-### 📥 1. Clonagem
-git clone https://github.com/RafaelLogrado/nave_2026
+### 🌍 1º método. Site online
+👉 https://space-invasion-raf.vercel.app/
 
-### ▶️ 2. Execução do Projeto
+### ▶️ 2º método. Execução do Projeto em computador local
 
 Abra o arquivo `index.html` diretamente no navegador:
 
@@ -138,5 +138,5 @@ Abra o arquivo `index.html` diretamente no navegador:
 ou
 - Clique com o botão direito → **Abrir com navegador**
 
-### 🌍 3. Versão em Produção
-👉 https://space-invasion-raf.vercel.app/
+### 📥 3º método. Clonagem
+Com o Git Bash: git clone https://github.com/RafaelLogrado/nave_2026
