@@ -48,6 +48,26 @@ A pontuação é acumulada ao derrotar inimigos e pode ser reduzida caso eles es
 
 Durante a partida, inimigos podem dropar **power-ups**, que concedem melhorias como aumento de vida, dano ou velocidade de disparo. Esses bônus ajudam os jogadores a resistirem por mais tempo.
 
+## Requisitos e regras de negócio
+
+### 1. Requisitos funcionais
+#### RF01 - Interface de menu: O jogo começa na tela de menu, dando ao usuário três opções: "Jogar", "Manual", e "Sobre".
+#### RF02 - Movimentação: No jogo, o player deve conseguir se movimentar tanto na vertical, quanto na horizontal.
+#### RF03 - Sistema de tiro: O player pode atirar contra os inimigos.
+#### RF04 - Sistema de power-ups: O player pode coletar power-ups que são deixados por inimigos.
+
+### 2. Requisitos não funcionais
+#### RNF01 - Desempenho: O jogo deve rodar a 60 FPS (quadros por segundo).
+#### RNF02 - Escalabilidade: O jogo deve suportar até 10 computadores rodando ele ao mesmo tempo.
+#### RNF03 - Portabilidade: O jogo deve ser suportado em telas com a resolução de 1920x1080, em ambiente Windows 11.
+
+### 3. Regras de negócio
+#### RN01 - Sistema de pontos: O jogador deve receber pontos ao derrotar inimigos e coletar certos power-ups, e perder pontos ao deixar inimigos passarem ou tomar dano.
+#### RN02 - Sistema de vidas: O jogador possui 3 vidas, podendo perder ou receber vidas. 
+#### RN03 - Fases: O jogo tem 3 fases no total, com cada uma tendo uma imagem de fundo diferente.
+#### RN04 - Sistema de tiro: O jogador pode atirar balas nos inimigos. Cada tipo de inimigo precisa de uma quantidade diferente de danos para ser abatido
+#### RN05 - Sistema de power-ups: Os inimigos podem deixar três tipos de "power-ups" diferentes. Esses podem melhorar a cadência e poder de tiro, ou dar uma vida extra/pontos.
+
 ## 📁 Estrutura do Projeto
 
 Abaixo está a **estrutura do projeto**, organizada para facilitar a manutenção, escalabilidade e entendimento do código:
@@ -73,7 +93,7 @@ Abaixo está a **estrutura do projeto**, organizada para facilitar a manutençã
 │   │   └── background3
 │   │
 │   ├── botao           # Botões da interface
-│   ├── efeitos         # Efeitos visuais (ex: tiros)
+│   ├── efeitos         # Efeitos visuais (ex: impacto do tiro)
 │   ├── inimigos        # Sprites dos inimigos
 │   ├── player          # Sprites do jogador
 │   ├── powerup         # Itens especiais
