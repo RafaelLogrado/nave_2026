@@ -57,9 +57,11 @@ Durante a partida, inimigos podem dropar **power-ups**, que concedem melhorias c
 #### RF04 - Sistema de power-ups: O player pode coletar power-ups que são deixados por inimigos.
 
 ### 2. Requisitos não funcionais
-#### RNF01 - Desempenho: O jogo deve rodar a 60 FPS (quadros por segundo).
-#### RNF02 - Escalabilidade: O jogo deve suportar até 10 computadores rodando ele ao mesmo tempo.
-#### RNF03 - Portabilidade: O jogo deve ser suportado em telas com a resolução de 1920x1080, em ambiente Windows 11.
+#### RNF01 - Tecnologia: O sistema deve ser desenvolvido utilizando JavaScript, garantindo que o código seja compatível com navegadores modernos sem a necessidade de “transpilação” complexa para execução básica.
+#### RNF02 - Desempenho: O jogo deve rodar a 60 FPS (quadros por segundo).
+#### RNF03 - Escalabilidade: O jogo deve suportar até 10 computadores rodando ele ao mesmo tempo.
+#### RNF04 - Portabilidade: O jogo deve “rodar” diretamente no navegador (HTML5/Canvas).
+#### RNF05 - Usabilidade: A interface do usuário deve ser projetada com foco exclusivo no em computadores, utilizando a resolução de 1920 x 1080 px. O layout deve garantir que todos os elementos (inputs, botões e tabelas) estejam visíveis e operáveis dentro desta área de visualização sem cortes indesejados.
 
 ### 3. Regras de negócio
 #### RN01 - Sistema de pontos: O jogador deve receber pontos ao derrotar inimigos e coletar certos power-ups, e perder pontos ao deixar inimigos passarem ou tomar dano.
